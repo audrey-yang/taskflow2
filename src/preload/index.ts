@@ -1,8 +1,13 @@
-import { contextBridge } from "electron";
+import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
+import { Task } from "../types";
 
 // Custom APIs for renderer
-const api = {};
+const api = {
+  ping: () => ipcRenderer.invoke("ping"),
+  createTask: (task: Task) => ipcRenderer.invoke("createTask", task),
+  getTasks: () => ipcRenderer.invoke("getTasks"),
+};
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise

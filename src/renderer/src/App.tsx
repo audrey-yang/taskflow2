@@ -1,8 +1,11 @@
-import Versions from "./components/Versions";
 import electronLogo from "./assets/electron.svg";
+import { PRIORITY, STATUS } from "../../types";
 
 function App(): JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send("ping");
+  const ping = (): void => window.api.ping()
+  const createTask = (): void => window.api.createTask(
+    { title: "Task", priority: PRIORITY.LOW, status: STATUS.NOT_STARTED }
+  );
 
   return (
     <>
@@ -16,18 +19,17 @@ function App(): JSX.Element {
         Please try pressing <code>F12</code> to open the devTool
       </p>
       <div className="actions">
-        <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
+      <div className="action">
+          <a target="_blank" rel="noreferrer" onClick={createTask}>
+            Create task
           </a>
         </div>
         <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
-            Send IPC
+          <a target="_blank" rel="noreferrer" onClick={ping}>
+            Send ping
           </a>
         </div>
       </div>
-      <Versions></Versions>
     </>
   );
 }

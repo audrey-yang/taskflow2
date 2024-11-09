@@ -2,8 +2,10 @@ import { app, shell, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
+import { api } from "./backend/api";
+import { Task } from "../types";
 
-function createWindow(): void {
+const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -33,7 +35,7 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
   }
-}
+};
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -49,8 +51,14 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window);
   });
 
-  // IPC test
-  ipcMain.on("ping", () => console.log("pong"));
+  // Set IPC handlers
+  ipcMain.handle("ping", () => console.log("pong"));
+  ipcMain.handle("createTask", async (_, task: Task) => {
+    return await api.createTask(task);
+  });
+  ipcMain.handle("getTasks", async (_) => {
+    return await api.getTasks();
+  });
 
   createWindow();
 
