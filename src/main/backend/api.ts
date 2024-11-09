@@ -1,4 +1,4 @@
-import { Task } from "../../types";
+import { Task } from "../../renderer/src/types";
 import { db } from "./db";
 
 export const api = {
@@ -11,6 +11,8 @@ export const api = {
     });
   },
   getTasks: async () => {
-    return await db.allDocs({ include_docs: true });
+    return await db.allDocs({ include_docs: true }).then((res) => {
+      return res.rows.map((row) => row.doc);
+    });
   },
 };

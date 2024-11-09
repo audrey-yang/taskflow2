@@ -3,7 +3,7 @@ import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
 import { api } from "./backend/api";
-import { Task } from "../types";
+import { Task } from "../renderer/src/types";
 
 const createWindow = (): void => {
   // Create the browser window.
@@ -21,6 +21,7 @@ const createWindow = (): void => {
 
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
+    mainWindow.webContents.openDevTools();
   });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {

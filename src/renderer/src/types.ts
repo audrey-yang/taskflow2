@@ -23,3 +23,8 @@ export interface Task {
   priority: Priority;
   status: Status;
 }
+
+export interface DBTask extends Task {
+  _id: string;
+  _rev: string;
+}
