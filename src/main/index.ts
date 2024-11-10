@@ -53,7 +53,6 @@ app.whenReady().then(() => {
   });
 
   // Set IPC handlers
-  ipcMain.handle("ping", () => console.log("pong"));
   ipcMain.handle("createTask", async (_, task: Task) => {
     return await api.createTask(task);
   });
@@ -65,6 +64,9 @@ app.whenReady().then(() => {
   });
   ipcMain.handle("changeTaskStatus", async (_, id: string, status: Status) => {
     return await api.changeTaskStatus(id, status);
+  });
+  ipcMain.handle("changeTaskTitle", async (_, id: string, title: string) => {
+    return await api.changeTaskTitle(id, title);
   });
 
   createWindow();
