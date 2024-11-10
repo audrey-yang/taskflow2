@@ -1,12 +1,15 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
-import { Task } from "../renderer/src/types";
+import { Priority, Status, Task } from "../renderer/src/types";
 
 // Custom APIs for renderer
 const api = {
-  ping: () => ipcRenderer.invoke("ping"),
   createTask: (task: Task) => ipcRenderer.invoke("createTask", task),
   getTasks: () => ipcRenderer.invoke("getTasks"),
+  changeTaskPriority: (id: string, priority: Priority) =>
+    ipcRenderer.invoke("changeTaskPriority", id, priority),
+  changeTaskStatus: (id: string, status: Status) =>
+    ipcRenderer.invoke("changeTaskStatus", id, status),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

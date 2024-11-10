@@ -1,14 +1,21 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import TaskList from "./components/TaskList";
 import { CssBaseline, Typography } from "@mui/material";
+import TaskList from "./components/TaskList";
 
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
   },
+  typography: {
+    fontFamily: `"Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Oxygen", "sans-serif"`,
+    fontSize: 14,
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+  },
 });
 
-function App(): JSX.Element {
+const App: () => JSX.Element = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -20,6 +27,6 @@ function App(): JSX.Element {
       </div>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

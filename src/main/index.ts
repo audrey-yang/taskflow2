@@ -3,7 +3,7 @@ import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png?asset";
 import { api } from "./backend/api";
-import { Task } from "../renderer/src/types";
+import { Priority, Status, Task } from "../renderer/src/types";
 
 const createWindow = (): void => {
   // Create the browser window.
@@ -59,6 +59,12 @@ app.whenReady().then(() => {
   });
   ipcMain.handle("getTasks", async (_) => {
     return await api.getTasks();
+  });
+  ipcMain.handle("changeTaskPriority", async (_, id: string, priority: Priority) => {
+    return await api.changeTaskPriority(id, priority);
+  });
+  ipcMain.handle("changeTaskStatus", async (_, id: string, status: Status) => {
+    return await api.changeTaskStatus(id, status);
   });
 
   createWindow();
