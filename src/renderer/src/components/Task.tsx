@@ -7,14 +7,15 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
+import CancelIcon from "@mui/icons-material/Cancel";
 import { Priority, Status } from "@renderer/types";
 import { prioritySelect, statusSelect, titleEditor } from "@renderer/components/EditComponents";
-import { Typography } from "@mui/material";
 
 const Task = ({ _id, title, priority, status }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [taskTitle, setTaskTitle] = useState(title);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [newTitle, setNewTitle] = useState(title);
   const [taskPriority, setTaskPriority] = useState(priority);
   const [taskStatus, setTaskStatus] = useState(status);
 
@@ -29,8 +30,9 @@ const Task = ({ _id, title, priority, status }) => {
     await window.api.changeTaskStatus(_id, newStatus);
     setTaskStatus(newStatus);
   };
-  const changeTitle = async () => {
-    await window.api.changeTaskTitle(_id, taskTitle);
+  const changeTitle = async (newTitle: string) => {
+    await window.api.changeTaskTitle(_id, newTitle);
+    setTaskTitle(newTitle);
     setIsEditingTitle(false);
   };
 
@@ -63,21 +65,25 @@ const Task = ({ _id, title, priority, status }) => {
         }}
       >
         <div className="flex flex-row w-full px-1">
-          <div className="w-1/2 mx-0 my-auto px-2 flex flex-row">
+          <div className="w-1/2 mx-0 my-auto px-2">
             {isEditingTitle ? (
-              titleEditor(taskTitle, setTaskTitle, changeTitle)
+              <div className="flex flex-row">
+                {titleEditor(newTitle, setNewTitle, changeTitle)}
+                <IconButton aria-label="edit">
+                  <DoneIcon onClick={() => changeTitle(newTitle)} />
+                </IconButton>
+                <IconButton aria-label="edit">
+                  <CancelIcon onClick={() => setIsEditingTitle(false)} />
+                </IconButton>
+              </div>
             ) : (
-              <div className="mx-0 my-auto w-10/12">{taskTitle}</div>
-            )}
-            {
-              <IconButton aria-label="edit">
-                {isEditingTitle ? (
-                  <DoneIcon onClick={() => changeTitle()} />
-                ) : (
+              <div className="flex flex-row">
+                <div className="mx-0 my-auto w-10/12">{taskTitle}</div>
+                <IconButton aria-label="edit">
                   <EditIcon onClick={() => setIsEditingTitle(true)} />
-                )}
-              </IconButton>
-            }
+                </IconButton>
+              </div>
+            )}
           </div>
           <div className="w-1/4 px-2">{prioritySelect(taskPriority, changePriority)}</div>
           <div className="w-1/4 px-2">{statusSelect(taskStatus, changeStatus)}</div>

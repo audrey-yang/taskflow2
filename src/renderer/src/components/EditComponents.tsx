@@ -1,7 +1,7 @@
-import { Priority, priorityToString, Status, statusToString } from "@renderer/types";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import { Priority, priorityToString, Status, statusToString } from "@renderer/types";
 
 const selectOptions = [0, 1, 2];
 const customSelect = (curValue, label, changeHandler, stringDisplay) => (
@@ -18,13 +18,15 @@ export const prioritySelect = (curValue: Priority, changePriority) =>
 export const statusSelect = (curValue: Status, changeStatus) =>
   customSelect(curValue, "Status", changeStatus, statusToString);
 
-export const titleEditor = (title: string, setTitle, submitFunction) => (
+export const titleEditor = (newTitle, setNewTitle, submitFunction) => (
   <TextField
-    value={title}
-    onChange={(event) => setTitle(event.target.value)}
+    spellCheck={true}
+    value={newTitle}
+    onChange={(event) => setNewTitle(event.target.value)}
     onKeyDown={(e) => {
       if (e.key === "Enter") {
-        submitFunction(title);
+        submitFunction(newTitle);
+        setNewTitle("");
       }
     }}
     className="w-10/12"
