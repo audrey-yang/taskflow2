@@ -32,3 +32,17 @@ export const titleEditor = (newTitle, setNewTitle, submitFunction) => (
     className="w-10/12"
   />
 );
+
+export const notesEditor = (note, setNote, disabled) => (
+  <TextField
+    spellCheck={true}
+    value={note}
+    onChange={(event) => setNote(event.target.value)}
+    className="w-full"
+    label={disabled ? "Note" : "Edit note"}
+    multiline
+    rows={2}
+    variant="filled"
+    disabled={disabled}
+  />
+);

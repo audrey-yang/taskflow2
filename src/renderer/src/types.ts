@@ -22,6 +22,7 @@ export interface Task {
   title: string;
   priority: Priority;
   status: Status;
+  note: string;
 }
 
 export interface DBTask extends Task {

@@ -30,4 +30,7 @@ export const api = {
   changeTaskTitle: async (id: string, title: string) => {
     return await updateTaskField(id, { title });
   },
+  changeTaskNote: async (id: string, note: string) => {
+    return await updateTaskField(id, { note });
+  },
 };

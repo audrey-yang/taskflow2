@@ -68,6 +68,9 @@ app.whenReady().then(() => {
   ipcMain.handle("changeTaskTitle", async (_, id: string, title: string) => {
     return await api.changeTaskTitle(id, title);
   });
+  ipcMain.handle("changeTaskNote", async (_, id: string, note: string) => {
+    return await api.changeTaskNote(id, note);
+  });
 
   createWindow();
 

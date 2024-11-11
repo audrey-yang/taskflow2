@@ -10,15 +10,23 @@ import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Priority, priorityToColor, Status } from "@renderer/types";
-import { prioritySelect, statusSelect, titleEditor } from "@renderer/components/EditComponents";
+import {
+  notesEditor,
+  prioritySelect,
+  statusSelect,
+  titleEditor,
+} from "@renderer/components/EditComponents";
 
-const Task = ({ _id, title, priority, status }) => {
+const Task = ({ _id, title, priority, status, note }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [taskTitle, setTaskTitle] = useState(title);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [taskPriority, setTaskPriority] = useState(priority);
   const [taskStatus, setTaskStatus] = useState(status);
+  const [taskNote, setTaskNote] = useState(note);
+  const [isEditingNote, setIsEditingNote] = useState(false);
+  const [newNote, setNewNote] = useState(note);
 
   // Change handlers
   const changePriority = async (event: SelectChangeEvent) => {
@@ -35,6 +43,11 @@ const Task = ({ _id, title, priority, status }) => {
     await window.api.changeTaskTitle(_id, newTitle);
     setTaskTitle(newTitle);
     setIsEditingTitle(false);
+  };
+  const changeNote = async (note: string) => {
+    await window.api.changeTaskNote(_id, note);
+    setTaskNote(note);
+    setIsEditingNote(false);
   };
 
   return (
@@ -71,10 +84,10 @@ const Task = ({ _id, title, priority, status }) => {
             {isEditingTitle ? (
               <div className="flex flex-row items-center ">
                 {titleEditor(newTitle, setNewTitle, changeTitle)}
-                <IconButton aria-label="edit">
+                <IconButton aria-label="done">
                   <DoneIcon onClick={() => changeTitle(newTitle)} />
                 </IconButton>
-                <IconButton aria-label="edit">
+                <IconButton aria-label="cancel">
                   <CancelIcon onClick={() => setIsEditingTitle(false)} />
                 </IconButton>
               </div>
@@ -92,7 +105,30 @@ const Task = ({ _id, title, priority, status }) => {
         </div>
       </AccordionSummary>
       <AccordionDetails>
-        <div className="ml-4">Notes</div>
+        <div className="ml-4">
+          {notesEditor(newNote, setNewNote, !isEditingNote)}
+          <div className="flex flex-row">
+            {isEditingNote ? (
+              <>
+                <IconButton aria-label="done">
+                  <DoneIcon onClick={() => changeNote(newNote)} />
+                </IconButton>
+                <IconButton aria-label="cancel">
+                  <CancelIcon
+                    onClick={() => {
+                      setNewNote(taskNote);
+                      setIsEditingNote(false);
+                    }}
+                  />
+                </IconButton>
+              </>
+            ) : (
+              <IconButton aria-label="edit">
+                <EditIcon onClick={() => setIsEditingNote(true)} />
+              </IconButton>
+            )}
+          </div>
+        </div>
       </AccordionDetails>
     </Accordion>
   );
