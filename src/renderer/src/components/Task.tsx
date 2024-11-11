@@ -8,7 +8,8 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { Priority, Status } from "@renderer/types";
+import CircleIcon from "@mui/icons-material/Circle";
+import { Priority, priorityToColor, Status } from "@renderer/types";
 import { prioritySelect, statusSelect, titleEditor } from "@renderer/components/EditComponents";
 
 const Task = ({ _id, title, priority, status }) => {
@@ -64,10 +65,11 @@ const Task = ({ _id, title, priority, status }) => {
           padding: 0,
         }}
       >
-        <div className="flex flex-row w-full px-1">
-          <div className="w-1/2 mx-0 my-auto px-2">
+        <div className="flex flex-row items-center w-full px-1">
+          <CircleIcon sx={{ color: priorityToColor(taskPriority) }} />
+          <div className="w-1/2 px-2">
             {isEditingTitle ? (
-              <div className="flex flex-row">
+              <div className="flex flex-row items-center ">
                 {titleEditor(newTitle, setNewTitle, changeTitle)}
                 <IconButton aria-label="edit">
                   <DoneIcon onClick={() => changeTitle(newTitle)} />
@@ -77,8 +79,8 @@ const Task = ({ _id, title, priority, status }) => {
                 </IconButton>
               </div>
             ) : (
-              <div className="flex flex-row">
-                <div className="mx-0 my-auto w-10/12">{taskTitle}</div>
+              <div className="flex flex-row items-center">
+                <div className="w-10/12">{taskTitle}</div>
                 <IconButton aria-label="edit">
                   <EditIcon onClick={() => setIsEditingTitle(true)} />
                 </IconButton>
