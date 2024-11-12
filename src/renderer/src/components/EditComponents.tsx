@@ -41,7 +41,6 @@ export const notesEditor = (note, setNote, disabled) => (
     className="w-full"
     label={disabled ? "Note" : "Edit note"}
     multiline
-    rows={2}
     variant="filled"
     disabled={disabled}
   />
