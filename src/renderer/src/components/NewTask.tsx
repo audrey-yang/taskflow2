@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Priority, priorityToString, PRIORITY } from "@renderer/types";
+import { Priority, priorityToString, PRIORITY, STATUS } from "@renderer/types";
 import TextField from "@mui/material/TextField";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,7 +8,7 @@ import DoneIcon from "@mui/icons-material/Done";
 
 const NewTask = ({ parentId, onTaskAdded }: { parentId: string; onTaskAdded: () => void }) => {
   const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState(0);
+  const [priority, setPriority] = useState(PRIORITY.LOW);
   const [titleHasError, setTitleHasError] = useState(false);
 
   const changePriority = (event: SelectChangeEvent) => {
@@ -17,16 +17,17 @@ const NewTask = ({ parentId, onTaskAdded }: { parentId: string; onTaskAdded: () 
 
   const submitTask = async () => {
     if (!title) {
+      setTitleHasError(true);
       return;
     }
-    await window.api.createTask({ title, priority });
+    await window.api.createTask({ title, priority, status: STATUS.NOT_STARTED, parentId });
     setTitle("");
-    setPriority(0);
+    setPriority(PRIORITY.LOW);
     onTaskAdded();
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex items-center space-x-2 py-2">
       <TextField
         value={title}
         onChange={(e) => {
@@ -39,7 +40,6 @@ const NewTask = ({ parentId, onTaskAdded }: { parentId: string; onTaskAdded: () 
         }}
         label="Title"
         error={titleHasError}
-        helperText={titleHasError ? "Title cannot be empty" : ""}
       />
       <Select value={priority as any} onChange={changePriority}>
         <MenuItem value={PRIORITY.LOW}>{priorityToString(PRIORITY.LOW)}</MenuItem>

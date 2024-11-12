@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -9,13 +9,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CircleIcon from "@mui/icons-material/Circle";
-import { Priority, priorityToColor, Status } from "@renderer/types";
+import { DBTask, Priority, priorityToColor, Status } from "@renderer/types";
 import {
   notesEditor,
   prioritySelect,
   statusSelect,
   titleEditor,
 } from "@renderer/components/EditComponents";
+import NewTask from "./NewTask";
 
 const Task = ({ _id, title, priority, status, note }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -27,6 +28,13 @@ const Task = ({ _id, title, priority, status, note }) => {
   const [taskNote, setTaskNote] = useState(note);
   const [isEditingNote, setIsEditingNote] = useState(false);
   const [newNote, setNewNote] = useState(note);
+  const [subtasks, setSubtasks] = useState<DBTask[]>([]);
+  const populateSubtasks = async () => {
+    setSubtasks(await window.api.getChildTasks(_id));
+  };
+  useEffect(() => {
+    populateSubtasks();
+  }, []);
 
   // Change handlers
   const changePriority = async (event: SelectChangeEvent) => {
@@ -127,6 +135,12 @@ const Task = ({ _id, title, priority, status, note }) => {
                 <EditIcon onClick={() => setIsEditingNote(true)} />
               </IconButton>
             )}
+          </div>
+          <div>
+            <NewTask parentId={_id} onTaskAdded={populateSubtasks} />
+            {subtasks.map((task) => (
+              <Task key={task._id} {...task} />
+            ))}
           </div>
         </div>
       </AccordionDetails>

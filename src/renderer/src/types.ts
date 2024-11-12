@@ -23,6 +23,7 @@ export interface Task {
   priority: Priority;
   status: Status;
   note: string;
+  parentId: string;
 }
 
 export interface DBTask extends Task {

@@ -7,7 +7,7 @@ const TaskList = () => {
   const [tasks, setTasks] = useState<DBTask[]>([]);
 
   const populateTasks = async () => {
-    setTasks(await window.api.getTasks());
+    setTasks(await window.api.getChildTasks(""));
   };
 
   useEffect(() => {

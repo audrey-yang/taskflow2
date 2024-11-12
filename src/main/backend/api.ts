@@ -16,10 +16,21 @@ export const api = {
       _id: Date.now().toString(),
     });
   },
-  getTasks: async () => {
+  getAllTasks: async () => {
     return await db.allDocs({ include_docs: true }).then((res) => {
       return res.rows.map((row) => row.doc);
     });
+  },
+  getChildTasks: async (parentId: string) => {
+    return await db
+      .find({
+        selector: {
+          parentId,
+        },
+      })
+      .then((res) => {
+        return res.docs;
+      });
   },
   changeTaskPriority: async (id: string, priority: Priority) => {
     return await updateTaskField(id, { priority });
@@ -32,5 +43,29 @@ export const api = {
   },
   changeTaskNote: async (id: string, note: string) => {
     return await updateTaskField(id, { note });
+  },
+  deleteTask: async (id: string) => {
+    const deleteDescendants = async (parentId: string) => {
+      const result = await db.find({
+        selector: {
+          parentId: parentId,
+        },
+      });
+      const children = result.docs;
+      await Promise.all(
+        children.map((child) => {
+          deleteDescendants(child._id);
+          db.remove(children);
+        }),
+      );
+    };
+
+    // Recursively delete descendants
+    deleteDescendants(id);
+
+    // Delete the task
+    db.get("mydoc").then(function (doc) {
+      return db.remove(doc);
+    });
   },
 };
