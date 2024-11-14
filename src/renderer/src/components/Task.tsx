@@ -36,7 +36,7 @@ const Task = ({ _id, title, priority, status, note, refresh }) => {
   };
   useEffect(() => {
     populateSubtasks();
-  }, []);
+  }, [subtasks]);
 
   // Change handlers
   const changePriority = async (event: SelectChangeEvent) => {
@@ -152,7 +152,7 @@ const Task = ({ _id, title, priority, status, note, refresh }) => {
           <div>
             <NewTask parentId={_id} onTaskAdded={populateSubtasks} />
             {subtasks.map((task) => (
-              <Task key={task._id} {...task} />
+              <Task key={task._id} {...task} refresh={populateSubtasks} />
             ))}
           </div>
         </div>

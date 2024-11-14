@@ -27,6 +27,7 @@ export const api = {
         selector: {
           parentId,
         },
+        sort: [{ priority: "desc" }, { status: "desc" }],
       })
       .then((res) => {
         return res.docs;

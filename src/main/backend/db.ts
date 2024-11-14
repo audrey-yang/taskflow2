@@ -7,9 +7,13 @@ db.info().then((info: any) => {
   console.log(info);
 });
 
+// Create indexes for Mango
 db.createIndex({
   index: { fields: ["parentId"] },
 });
 db.createIndex({
   index: { fields: ["_id"] },
+});
+db.createIndex({
+  index: { fields: ["priority", "status"] },
 });
