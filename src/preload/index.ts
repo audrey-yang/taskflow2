@@ -13,6 +13,7 @@ const api = {
     ipcRenderer.invoke("changeTaskStatus", id, status),
   changeTaskTitle: (id: string, title: string) => ipcRenderer.invoke("changeTaskTitle", id, title),
   changeTaskNote: (id: string, note: string) => ipcRenderer.invoke("changeTaskNote", id, note),
+  deleteTask: (id: string) => ipcRenderer.invoke("deleteTask", id),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

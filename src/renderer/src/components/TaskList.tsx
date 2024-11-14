@@ -12,13 +12,13 @@ const TaskList = () => {
 
   useEffect(() => {
     populateTasks();
-  }, []);
+  }, [tasks]);
 
   return (
     <div>
       <NewTask parentId="" onTaskAdded={populateTasks} />
       {tasks.map((task) => (
-        <Task key={task._id} {...task} />
+        <Task key={task._id} {...task} refresh={populateTasks} />
       ))}
     </div>
   );

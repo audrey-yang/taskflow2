@@ -45,27 +45,28 @@ export const api = {
     return await updateTaskField(id, { note });
   },
   deleteTask: async (id: string) => {
-    const deleteDescendants = async (parentId: string) => {
+    const recursiveDelete = async (parentId: string) => {
+      // Find and delete descendants
       const result = await db.find({
         selector: {
           parentId: parentId,
         },
       });
+
       const children = result.docs;
       await Promise.all(
         children.map((child) => {
-          deleteDescendants(child._id);
-          db.remove(children);
+          recursiveDelete(child._id);
         }),
       );
+
+      // Delete self
+      await db.get(parentId).then((doc) => {
+        db.remove(doc);
+      });
     };
 
     // Recursively delete descendants
-    deleteDescendants(id);
-
-    // Delete the task
-    db.get("mydoc").then(function (doc) {
-      return db.remove(doc);
-    });
+    await recursiveDelete(id);
   },
 };

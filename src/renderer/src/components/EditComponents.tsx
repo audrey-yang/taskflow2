@@ -38,7 +38,7 @@ export const notesEditor = (note, setNote, disabled) => (
     spellCheck={true}
     value={note}
     onChange={(event) => setNote(event.target.value)}
-    className="w-full"
+    className="w-10/12"
     label={disabled ? "Note" : "Edit note"}
     multiline
     variant="filled"

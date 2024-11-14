@@ -74,6 +74,9 @@ app.whenReady().then(() => {
   ipcMain.handle("changeTaskNote", async (_, id: string, note: string) => {
     return await api.changeTaskNote(id, note);
   });
+  ipcMain.handle("deleteTask", async (_, id: string) => {
+    return await api.deleteTask(id);
+  });
 
   createWindow();
 

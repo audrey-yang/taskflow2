@@ -4,11 +4,13 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import { SelectChangeEvent } from "@mui/material/Select";
+import ButtonGroup from "@mui/material/ButtonGroup";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CircleIcon from "@mui/icons-material/Circle";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DBTask, Priority, priorityToColor, Status } from "@renderer/types";
 import {
   notesEditor,
@@ -18,7 +20,7 @@ import {
 } from "@renderer/components/EditComponents";
 import NewTask from "./NewTask";
 
-const Task = ({ _id, title, priority, status, note }) => {
+const Task = ({ _id, title, priority, status, note, refresh }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [taskTitle, setTaskTitle] = useState(title);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
@@ -57,6 +59,10 @@ const Task = ({ _id, title, priority, status, note }) => {
     setTaskNote(note);
     setIsEditingNote(false);
   };
+  const deleteTask = async () => {
+    await window.api.deleteTask(_id);
+    await refresh();
+  };
 
   return (
     <Accordion
@@ -92,19 +98,26 @@ const Task = ({ _id, title, priority, status, note }) => {
             {isEditingTitle ? (
               <div className="flex flex-row items-center ">
                 {titleEditor(newTitle, setNewTitle, changeTitle)}
-                <IconButton aria-label="done">
-                  <DoneIcon onClick={() => changeTitle(newTitle)} />
-                </IconButton>
-                <IconButton aria-label="cancel">
-                  <CancelIcon onClick={() => setIsEditingTitle(false)} />
-                </IconButton>
+                <ButtonGroup size="small" aria-label="Submit or cancel">
+                  <IconButton aria-label="done">
+                    <DoneIcon onClick={() => changeTitle(newTitle)} />
+                  </IconButton>
+                  <IconButton aria-label="cancel">
+                    <CancelIcon onClick={() => setIsEditingTitle(false)} />
+                  </IconButton>
+                </ButtonGroup>
               </div>
             ) : (
               <div className="flex flex-row items-center">
-                <div className="w-10/12">{taskTitle}</div>
-                <IconButton aria-label="edit">
-                  <EditIcon onClick={() => setIsEditingTitle(true)} />
-                </IconButton>
+                <div className="w-10/12 font-semibold">{taskTitle}</div>
+                <ButtonGroup size="small" aria-label="Submit or cancel">
+                  <IconButton aria-label="edit">
+                    <EditIcon onClick={() => setIsEditingTitle(true)} />
+                  </IconButton>
+                  <IconButton aria-label="delete">
+                    <DeleteIcon onClick={deleteTask} />
+                  </IconButton>
+                </ButtonGroup>
               </div>
             )}
           </div>
@@ -114,10 +127,10 @@ const Task = ({ _id, title, priority, status, note }) => {
       </AccordionSummary>
       <AccordionDetails>
         <div className="ml-4">
-          {notesEditor(newNote, setNewNote, !isEditingNote)}
           <div className="flex flex-row">
+            {notesEditor(newNote, setNewNote, !isEditingNote)}
             {isEditingNote ? (
-              <>
+              <ButtonGroup size="small" aria-label="Submit or cancel">
                 <IconButton aria-label="done">
                   <DoneIcon onClick={() => changeNote(newNote)} />
                 </IconButton>
@@ -129,7 +142,7 @@ const Task = ({ _id, title, priority, status, note }) => {
                     }}
                   />
                 </IconButton>
-              </>
+              </ButtonGroup>
             ) : (
               <IconButton aria-label="edit">
                 <EditIcon onClick={() => setIsEditingNote(true)} />

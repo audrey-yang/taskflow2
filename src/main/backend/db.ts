@@ -6,3 +6,10 @@ db.info().then((info: any) => {
   console.log("Hello, PouchDB!");
   console.log(info);
 });
+
+db.createIndex({
+  index: { fields: ["parentId"] },
+});
+db.createIndex({
+  index: { fields: ["_id"] },
+});
