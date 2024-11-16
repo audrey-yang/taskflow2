@@ -70,7 +70,8 @@ const Task = ({ _id, title, priority, status, note, refresh }) => {
       disableGutters
       elevation={0}
       sx={{
-        border: "none",
+        borderTop: "solid 1px #e5e7eb",
+        backgroundClip: "padding-box",
         "&::before": {
           display: "none",
         },

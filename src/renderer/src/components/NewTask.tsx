@@ -51,8 +51,9 @@ const NewTask = ({ parentId, onTaskAdded }: { parentId: string; onTaskAdded: () 
             }}
             label="Title"
             error={titleHasError}
+            size="small"
           />
-          <Select value={priority as any} onChange={changePriority}>
+          <Select value={priority as any} onChange={changePriority} size="small">
             <MenuItem value={PRIORITY.LOW}>{priorityToString(PRIORITY.LOW)}</MenuItem>
             <MenuItem value={PRIORITY.MEDIUM}>{priorityToString(PRIORITY.MEDIUM)}</MenuItem>
             <MenuItem value={PRIORITY.HIGH}>{priorityToString(PRIORITY.HIGH)}</MenuItem>

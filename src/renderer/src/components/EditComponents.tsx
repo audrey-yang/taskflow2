@@ -5,7 +5,7 @@ import { Priority, priorityToString, Status, statusToString } from "@renderer/ty
 
 const selectOptions = [0, 1, 2];
 const customSelect = (curValue, label, changeHandler, stringDisplay) => (
-  <Select value={curValue} label={label} onChange={changeHandler} fullWidth>
+  <Select value={curValue} label={label} onChange={changeHandler} fullWidth size="small">
     {selectOptions.map((val) => (
       <MenuItem value={val}>{stringDisplay(val)}</MenuItem>
     ))}
@@ -30,6 +30,7 @@ export const titleEditor = (newTitle, setNewTitle, submitFunction) => (
       }
     }}
     className="w-10/12"
+    size="small"
   />
 );
 
