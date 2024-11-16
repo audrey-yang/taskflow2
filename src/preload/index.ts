@@ -7,6 +7,10 @@ const api = {
   createTask: (task: Task) => ipcRenderer.invoke("createTask", task),
   getAllTasks: () => ipcRenderer.invoke("getTasks"),
   getChildTasks: (parentId: string) => ipcRenderer.invoke("getChildTasks", parentId),
+  getChildTasksIncomplete: (parentId: string) =>
+    ipcRenderer.invoke("getChildTasksIncomplete", parentId),
+  getChildTasksComplete: (parentId: string) =>
+    ipcRenderer.invoke("getChildTasksComplete", parentId),
   changeTaskPriority: (id: string, priority: Priority) =>
     ipcRenderer.invoke("changeTaskPriority", id, priority),
   changeTaskStatus: (id: string, status: Status) =>

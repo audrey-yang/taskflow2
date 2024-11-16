@@ -1,4 +1,4 @@
-import { Priority, Status, Task } from "../../renderer/src/types";
+import { Priority, STATUS, Status, Task } from "../../renderer/src/types";
 import { db } from "./db";
 
 const updateTaskField = async (id: string, field: Partial<Task>) => {
@@ -28,6 +28,31 @@ export const api = {
           parentId,
         },
         sort: [{ priority: "desc" }, { status: "desc" }],
+      })
+      .then((res) => {
+        return res.docs;
+      });
+  },
+  getChildTasksIncomplete: async (parentId: string) => {
+    return await db
+      .find({
+        selector: {
+          parentId,
+          status: { $gte: STATUS.IN_PROGRESS },
+        },
+        sort: [{ priority: "desc" }, { status: "desc" }],
+      })
+      .then((res) => {
+        return res.docs;
+      });
+  },
+  getChildTasksComplete: async (parentId: string) => {
+    return await db
+      .find({
+        selector: {
+          parentId,
+          status: STATUS.COMPLETED,
+        },
       })
       .then((res) => {
         return res.docs;

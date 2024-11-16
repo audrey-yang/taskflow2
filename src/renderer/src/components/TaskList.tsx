@@ -2,24 +2,50 @@ import { useEffect, useState } from "react";
 import Task from "./Task";
 import { DBTask } from "@renderer/types";
 import NewTask from "./NewTask";
+import Button from "@mui/material/Button";
 
-const TaskList = () => {
-  const [tasks, setTasks] = useState<DBTask[]>([]);
+const TaskList = ({
+  parentId,
+  parentIsCompleted,
+}: {
+  parentId?: string;
+  parentIsCompleted?: boolean;
+}) => {
+  parentIsCompleted = parentIsCompleted ?? false;
+  const [incompleteTasks, setIncompleteTasks] = useState<DBTask[]>([]);
+  const [completeTasks, setCompleteTasks] = useState<DBTask[]>([]);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   const populateTasks = async () => {
-    setTasks(await window.api.getChildTasks(""));
+    setIncompleteTasks(await window.api.getChildTasksIncomplete(parentId ?? ""));
+    setCompleteTasks(await window.api.getChildTasksComplete(parentId ?? ""));
   };
 
   useEffect(() => {
     populateTasks();
-  }, [tasks]);
+  }, []);
 
   return (
     <div>
-      <NewTask parentId="" onTaskAdded={populateTasks} />
-      {tasks.map((task) => (
+      {parentIsCompleted ? null : <NewTask parentId={parentId ?? ""} onTaskAdded={populateTasks} />}
+      {incompleteTasks.map((task) => (
         <Task key={task._id} {...task} refresh={populateTasks} />
       ))}
+      {completeTasks.length > 0 ? (
+        <div>
+          <Button
+            onClick={() => setShowCompleted((prev) => !prev)}
+            sx={{
+              margin: "0.5rem auto",
+            }}
+          >
+            {showCompleted ? "Hide completed tasks" : "Show completed tasks"}
+          </Button>
+          {showCompleted
+            ? completeTasks.map((task) => <Task key={task._id} {...task} refresh={populateTasks} />)
+            : null}
+        </div>
+      ) : null}
     </div>
   );
 };

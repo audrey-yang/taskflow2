@@ -15,5 +15,8 @@ db.createIndex({
   index: { fields: ["_id"] },
 });
 db.createIndex({
+  index: { fields: ["status"] },
+});
+db.createIndex({
   index: { fields: ["priority", "status"] },
 });
