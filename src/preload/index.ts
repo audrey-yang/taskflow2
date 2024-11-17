@@ -11,6 +11,8 @@ const api = {
     ipcRenderer.invoke("getChildTasksIncomplete", parentId),
   getChildTasksComplete: (parentId: string) =>
     ipcRenderer.invoke("getChildTasksComplete", parentId),
+  countChildTasksByStatus: (parentId: string, status: Status) =>
+    ipcRenderer.invoke("countChildTasksByStatus", parentId, status),
   changeTaskPriority: (id: string, priority: Priority) =>
     ipcRenderer.invoke("changeTaskPriority", id, priority),
   changeTaskStatus: (id: string, status: Status) =>

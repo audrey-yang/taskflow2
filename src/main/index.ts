@@ -68,6 +68,9 @@ app.whenReady().then(() => {
   ipcMain.handle("getChildTasksComplete", async (_, parentId: string) => {
     return await api.getChildTasksComplete(parentId);
   });
+  ipcMain.handle("countChildTasksByStatus", async (_, parentId: string, status: Status) => {
+    return await api.countChildTasksByStatus(parentId, status);
+  });
   ipcMain.handle("changeTaskPriority", async (_, id: string, priority: Priority) => {
     return await api.changeTaskPriority(id, priority);
   });

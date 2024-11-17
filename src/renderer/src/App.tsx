@@ -1,5 +1,6 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, Typography } from "@mui/material";
+import Header from "./components/Header";
 import TaskList from "./components/TaskList";
 
 const darkTheme = createTheme({
@@ -23,6 +24,7 @@ const App: () => JSX.Element = () => {
         <Typography variant="h3" className="my-2">
           Taskflow
         </Typography>
+        <Header />
         <TaskList />
       </div>
     </ThemeProvider>

@@ -58,6 +58,19 @@ export const api = {
         return res.docs;
       });
   },
+  countChildTasksByStatus: async (parentId: string, status: Status) => {
+    return await db
+      .find({
+        selector: {
+          parentId,
+          status,
+        },
+        fields: ["_id"], // Only select the _id field to reduce data transfer
+      })
+      .then((res) => {
+        return res.docs.length;
+      });
+  },
   changeTaskPriority: async (id: string, priority: Priority) => {
     return await updateTaskField(id, { priority });
   },
