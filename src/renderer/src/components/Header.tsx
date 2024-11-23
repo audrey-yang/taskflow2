@@ -22,15 +22,15 @@ const Header = () => {
 
   return (
     <div className="flex flex-row">
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateCalendar sx={{ margin: 0 }} />
-      </LocalizationProvider>
-      <div className="flex flex-col my-3 px-5">
-        <Typography variant="h6">Stats</Typography>
+      <div className="flex flex-col my-5 px-5">
+        <Typography className="italic">At a glance</Typography>
         <Typography>Not started: {numUnstartedTasks}</Typography>
         <Typography>In progress: {numInProgressTasks}</Typography>
         <Typography>Completed: {numCompletedTasks}</Typography>
       </div>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DateCalendar sx={{ margin: 0 }} />
+      </LocalizationProvider>
     </div>
   );
 };

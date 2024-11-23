@@ -62,7 +62,6 @@ const Task = ({ _id, title, priority, status, note, refresh }) => {
     <Accordion
       expanded={isExpanded}
       disableGutters
-      elevation={0}
       sx={{
         borderTop: "solid 1px #e5e7eb",
         backgroundClip: "padding-box",
@@ -94,11 +93,11 @@ const Task = ({ _id, title, priority, status, note, refresh }) => {
               <div className="flex flex-row items-center ">
                 {titleEditor(newTitle, setNewTitle, changeTitle)}
                 <ButtonGroup size="small" aria-label="Submit or cancel">
-                  <IconButton aria-label="done">
-                    <DoneIcon onClick={() => changeTitle(newTitle)} />
+                  <IconButton aria-label="done" onClick={() => changeTitle(newTitle)}>
+                    <DoneIcon />
                   </IconButton>
-                  <IconButton aria-label="cancel">
-                    <CancelIcon onClick={() => setIsEditingTitle(false)} />
+                  <IconButton aria-label="cancel" onClick={() => setIsEditingTitle(false)}>
+                    <CancelIcon />
                   </IconButton>
                 </ButtonGroup>
               </div>
@@ -106,11 +105,11 @@ const Task = ({ _id, title, priority, status, note, refresh }) => {
               <div className="flex flex-row items-center">
                 <div className="w-10/12 font-semibold">{taskTitle}</div>
                 <ButtonGroup size="small" aria-label="Submit or cancel">
-                  <IconButton aria-label="edit">
-                    <EditIcon onClick={() => setIsEditingTitle(true)} />
+                  <IconButton aria-label="edit" onClick={() => setIsEditingTitle(true)}>
+                    <EditIcon />
                   </IconButton>
-                  <IconButton aria-label="delete">
-                    <DeleteIcon onClick={deleteTask} />
+                  <IconButton aria-label="delete" onClick={deleteTask}>
+                    <DeleteIcon />
                   </IconButton>
                 </ButtonGroup>
               </div>
@@ -126,21 +125,22 @@ const Task = ({ _id, title, priority, status, note, refresh }) => {
             {notesEditor(newNote, setNewNote, !isEditingNote)}
             {isEditingNote ? (
               <ButtonGroup size="small" aria-label="Submit or cancel">
-                <IconButton aria-label="done">
-                  <DoneIcon onClick={() => changeNote(newNote)} />
+                <IconButton aria-label="done" onClick={() => changeNote(newNote)}>
+                  <DoneIcon />
                 </IconButton>
-                <IconButton aria-label="cancel">
-                  <CancelIcon
-                    onClick={() => {
-                      setNewNote(taskNote);
-                      setIsEditingNote(false);
-                    }}
-                  />
+                <IconButton
+                  aria-label="cancel"
+                  onClick={() => {
+                    setNewNote(taskNote);
+                    setIsEditingNote(false);
+                  }}
+                >
+                  <CancelIcon />
                 </IconButton>
               </ButtonGroup>
             ) : (
-              <IconButton aria-label="edit">
-                <EditIcon onClick={() => setIsEditingNote(true)} />
+              <IconButton aria-label="edit" onClick={() => setIsEditingNote(true)}>
+                <EditIcon />
               </IconButton>
             )}
           </div>

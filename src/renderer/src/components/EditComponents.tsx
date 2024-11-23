@@ -7,7 +7,9 @@ const selectOptions = [0, 1, 2];
 const customSelect = (curValue, label, changeHandler, stringDisplay) => (
   <Select value={curValue} label={label} onChange={changeHandler} fullWidth size="small">
     {selectOptions.map((val) => (
-      <MenuItem value={val}>{stringDisplay(val)}</MenuItem>
+      <MenuItem key={stringDisplay(val)} value={val}>
+        {stringDisplay(val)}
+      </MenuItem>
     ))}
   </Select>
 );
