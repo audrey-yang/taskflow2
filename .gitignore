@@ -6,3 +6,5 @@ out
 .vscode
 vite
 .env
+tasks*
+secrets

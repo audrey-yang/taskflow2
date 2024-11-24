@@ -33,6 +33,7 @@
     "dayjs": "^1.11.13",
     "electron-squirrel-startup": "^1.0.1",
     "electron-updater": "^6.1.7",
+    "ibm-cloud-sdk-core": "^5.1.0",
     "pouchdb": "^9.0.0",
     "pouchdb-find": "^9.0.0"
   },

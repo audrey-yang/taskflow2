@@ -1,25 +1,49 @@
+import { IamAuthenticator } from "ibm-cloud-sdk-core";
 import PouchDB from "pouchdb";
-
-export const db: PouchDB = new PouchDB("http://127.0.0.1:5984/tasks");
 PouchDB.plugin(require("pouchdb-find"));
-db.info()
+
+export const db: PouchDB = new PouchDB("tasks");
+
+// Get Cloudant auth credentials
+const authenticator = new IamAuthenticator({
+  apikey: import.meta.env.VITE_CLOUDANT_API_KEY,
+});
+
+// Create DB and sync with remote DB
+export const remoteDb: PouchDB = new PouchDB(`${import.meta.env.VITE_CLOUDANT_URL}`, {
+  fetch: async (url: any, opts: any) => {
+    const bearerOpts = {};
+    await authenticator.authenticate(bearerOpts);
+    opts.headers.set("Authorization", bearerOpts["headers"]["Authorization"]);
+    return PouchDB.fetch(url, opts);
+  },
+});
+
+remoteDb
+  .info()
   .then((_) => {
-    console.log("Hello, PouchDB!");
+    console.log("Successfully connected to Cloudant");
   })
   .catch((err: any) => {
     console.error(err);
   });
+
+db.sync(remoteDb, {
+  live: true,
+  retry: true,
+  continuous: true,
+});
 
 // Create indexes for Mango
 db.createIndex({
   index: { fields: ["parentId"] },
 });
 db.createIndex({
-  index: { fields: ["_id"] },
-});
-db.createIndex({
   index: { fields: ["status"] },
 });
 db.createIndex({
-  index: { fields: ["priority", "status"] },
+  index: { fields: ["parentId", "status"] },
+});
+db.createIndex({
+  index: { fields: ["parentId", "priority", "status"] },
 });

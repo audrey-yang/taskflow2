@@ -17,8 +17,13 @@ const TaskList = ({
   const [showCompleted, setShowCompleted] = useState(false);
 
   const populateTasks = async () => {
-    setIncompleteTasks(await window.api.getChildTasksIncomplete(parentId ?? ""));
-    setCompleteTasks(await window.api.getChildTasksComplete(parentId ?? ""));
+    try {
+      setIncompleteTasks(await window.api.getChildTasksIncomplete(parentId ?? ""));
+      setCompleteTasks(await window.api.getChildTasksComplete(parentId ?? ""));
+    } catch (err) {
+      // Retry if PouchDB fails
+      await populateTasks();
+    }
   };
 
   useEffect(() => {

@@ -36,6 +36,7 @@ const Task = ({ _id, title, priority, status, note, refresh }) => {
     const newPriority = event.target.value as unknown as Priority;
     await window.api.changeTaskPriority(_id, newPriority);
     setTaskPriority(newPriority);
+    await refresh();
   };
   const changeStatus = async (event: SelectChangeEvent) => {
     const newStatus = event.target.value as unknown as Status;

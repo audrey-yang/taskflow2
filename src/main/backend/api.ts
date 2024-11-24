@@ -38,6 +38,7 @@ export const api = {
       .find({
         selector: {
           parentId,
+          priority: { $exists: true },
           status: { $gte: STATUS.IN_PROGRESS },
         },
         sort: [{ priority: "desc" }, { status: "desc" }],
@@ -88,7 +89,7 @@ export const api = {
       // Find and delete descendants
       const result = await db.find({
         selector: {
-          parentId: parentId,
+          parentId,
         },
       });
 
