@@ -16,13 +16,21 @@ const TaskList = ({
   const [completeTasks, setCompleteTasks] = useState<DBTask[]>([]);
   const [showCompleted, setShowCompleted] = useState(false);
 
-  const populateTasks = async () => {
+  const populateTasks = async (tries?: number) => {
     try {
       setIncompleteTasks(await window.api.getChildTasksIncomplete(parentId ?? ""));
       setCompleteTasks(await window.api.getChildTasksComplete(parentId ?? ""));
     } catch (err) {
       // Retry if PouchDB fails
-      await populateTasks();
+      if (tries === undefined) {
+        tries = 0;
+      }
+
+      if (tries > 3) {
+        throw err;
+      } else {
+        await populateTasks(tries + 1);
+      }
     }
   };
 
