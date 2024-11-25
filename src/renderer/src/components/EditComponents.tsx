@@ -1,7 +1,7 @@
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import { Priority, priorityToString, Status, statusToString } from "@renderer/types";
+import { Priority, priorityToString, Status, statusToString } from "../types";
 
 const selectOptions = [0, 1, 2];
 const customSelect = (curValue, label, changeHandler, stringDisplay) => (

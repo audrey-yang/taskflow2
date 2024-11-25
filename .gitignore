@@ -5,6 +5,7 @@ out
 *.log*
 .vscode
 vite
+.vite
 .env
 tasks*
 secrets

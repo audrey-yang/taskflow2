@@ -10,7 +10,7 @@ const authenticator = new IamAuthenticator({
 });
 
 // Create DB and sync with remote DB
-export const remoteDb: PouchDB = new PouchDB(`${import.meta.env.VITE_CLOUDANT_URL}`, {
+const remoteDb: PouchDB = new PouchDB(`${import.meta.env.VITE_CLOUDANT_URL}`, {
   fetch: async (url: any, opts: any) => {
     const bearerOpts = {};
     await authenticator.authenticate(bearerOpts);

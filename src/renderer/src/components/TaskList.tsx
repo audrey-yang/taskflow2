@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Task from "./Task";
-import { DBTask } from "@renderer/types";
-import NewTask from "./NewTask";
 import Button from "@mui/material/Button";
+import Task from "./Task";
+import NewTask from "./NewTask";
+import { DBTask } from "../types";
 
 const TaskList = ({
   parentId,

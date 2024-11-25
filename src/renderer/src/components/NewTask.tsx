@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Priority, priorityToString, PRIORITY, STATUS } from "@renderer/types";
 import TextField from "@mui/material/TextField";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -7,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import DoneIcon from "@mui/icons-material/Done";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import { Priority, priorityToString, PRIORITY, STATUS } from "../types";
 
 const NewTask = ({ parentId, onTaskAdded }: { parentId: string; onTaskAdded: () => void }) => {
   const [title, setTitle] = useState("");

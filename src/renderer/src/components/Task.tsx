@@ -11,13 +11,8 @@ import DoneIcon from "@mui/icons-material/Done";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CircleIcon from "@mui/icons-material/Circle";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Priority, priorityToColor, STATUS, Status } from "@renderer/types";
-import {
-  notesEditor,
-  prioritySelect,
-  statusSelect,
-  titleEditor,
-} from "@renderer/components/EditComponents";
+import { Priority, priorityToColor, STATUS, Status } from "../types";
+import { notesEditor, prioritySelect, statusSelect, titleEditor } from "./EditComponents";
 import TaskList from "./TaskList";
 
 const Task = ({ _id, title, priority, status, note, refresh }) => {
