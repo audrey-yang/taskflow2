@@ -1,7 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
-import icon from "../../resources/icon.png?asset";
+import icon from "../../resources/icon.png";
 import { api } from "./backend/api";
 import { Priority, Status, Task } from "../renderer/src/types";
 
@@ -35,7 +35,7 @@ const createWindow = (): void => {
   if (is.dev && process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]) {
     mainWindow.loadURL(process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]);
   } else {
-    mainWindow.loadFile(join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+    mainWindow.loadFile(join(__dirname, `../../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
 };
 

@@ -1,8 +1,10 @@
+import { app } from "electron";
 import { IamAuthenticator } from "ibm-cloud-sdk-core";
+import path from "path";
 import PouchDB from "pouchdb";
 PouchDB.plugin(require("pouchdb-find"));
 
-export const db: PouchDB = new PouchDB("tasks");
+export const db: PouchDB = new PouchDB(path.join(app.getPath("sessionData"), "leveldb"));
 
 // Get Cloudant auth credentials
 const authenticator = new IamAuthenticator({
@@ -46,4 +48,5 @@ db.createIndex({
 });
 db.createIndex({
   index: { fields: ["parentId", "priority", "status"] },
+  ddoc: "parent-status-priority",
 });

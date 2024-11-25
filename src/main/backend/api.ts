@@ -42,6 +42,7 @@ export const api = {
           status: { $gte: STATUS.IN_PROGRESS },
         },
         sort: [{ priority: "desc" }, { status: "desc" }],
+        using: "parent-status-priority",
       })
       .then((res) => {
         return res.docs;
