@@ -37,4 +37,6 @@ jobs:
       - name: Publish app
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          VITE_CLOUDANT_URL: ${{ secrets.VITE_CLOUDANT_URL }}
+          VITE_CLOUDANT_API_KEY: ${{ secrets.VITE_CLOUDANT_API_KEY }}
         run: npm run publish
