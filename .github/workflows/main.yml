@@ -9,7 +9,8 @@ jobs:
         os:
           [
             { name: 'windows', image: 'windows-latest' },
-            { name: 'macos', image: 'macos-latest' },
+            { name: 'macos-arm', image: 'macos-latest' },
+            { name: 'macos-x86', image: 'macos-latest-large' }
           ]
     runs-on: ${{ matrix.os.image }}
     steps:
