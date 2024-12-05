@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, Typography } from "@mui/material";
 import Header from "./components/Header";
 import TaskList from "./components/TaskList";
+import { STATUS } from "./types";
 
 const darkTheme = createTheme({
   palette: {
@@ -17,6 +19,17 @@ const darkTheme = createTheme({
 });
 
 const App: () => JSX.Element = () => {
+  // Lift state out of Header for refresh
+  const [numUnstartedTasks, setNumUnstartedTasks] = useState(0);
+  const [numInProgressTasks, setNumInProgressTasks] = useState(0);
+  const [numCompletedTasks, setNumCompletedTasks] = useState(0);
+
+  const getTaskCounts = async () => {
+    setNumUnstartedTasks(await window.api.countChildTasksByStatus("", STATUS.NOT_STARTED));
+    setNumInProgressTasks(await window.api.countChildTasksByStatus("", STATUS.IN_PROGRESS));
+    setNumCompletedTasks(await window.api.countChildTasksByStatus("", STATUS.COMPLETED));
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -24,8 +37,12 @@ const App: () => JSX.Element = () => {
         <Typography variant="h3" className="my-2">
           Taskflow
         </Typography>
-        <Header />
-        <TaskList />
+        <Header
+          numUnstartedTasks={numUnstartedTasks}
+          numInProgressTasks={numInProgressTasks}
+          numCompletedTasks={numCompletedTasks}
+        />
+        <TaskList refreshHeader={getTaskCounts} />
       </div>
     </ThemeProvider>
   );

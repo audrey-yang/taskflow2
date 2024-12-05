@@ -7,9 +7,11 @@ import { DBTask } from "../types";
 const TaskList = ({
   parentId,
   parentIsCompleted,
+  refreshHeader,
 }: {
   parentId?: string;
   parentIsCompleted?: boolean;
+  refreshHeader?: () => void;
 }) => {
   parentIsCompleted = parentIsCompleted ?? false;
   const [incompleteTasks, setIncompleteTasks] = useState<DBTask[]>([]);
@@ -20,6 +22,10 @@ const TaskList = ({
     try {
       setIncompleteTasks(await window.api.getChildTasksIncomplete(parentId ?? ""));
       setCompleteTasks(await window.api.getChildTasksComplete(parentId ?? ""));
+      if (!parentId) {
+        // Refresh the header only at the top level
+        refreshHeader();
+      }
     } catch (err) {
       // Retry if PouchDB fails
       if (tries === undefined) {
