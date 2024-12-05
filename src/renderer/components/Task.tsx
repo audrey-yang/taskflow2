@@ -15,7 +15,21 @@ import { Priority, priorityToColor, STATUS, Status } from "../types";
 import { notesEditor, prioritySelect, statusSelect, titleEditor } from "./EditComponents";
 import TaskList from "./TaskList";
 
-const Task = ({ _id, title, priority, status, note, refresh }) => {
+const Task = ({
+  _id,
+  title,
+  priority,
+  status,
+  note,
+  refresh,
+}: {
+  _id: string;
+  title: string;
+  priority: Priority;
+  status: Status;
+  note: string;
+  refresh: () => Promise<void>;
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [taskTitle, setTaskTitle] = useState(title);
   const [isEditingTitle, setIsEditingTitle] = useState(false);

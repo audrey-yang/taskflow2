@@ -4,7 +4,7 @@ import path from "path";
 import PouchDB from "pouchdb";
 PouchDB.plugin(require("pouchdb-find"));
 
-export const db: PouchDB = new PouchDB(path.join(app.getPath("sessionData"), "leveldb"));
+export const db = new PouchDB(path.join(app.getPath("sessionData"), "leveldb"));
 
 // Get Cloudant auth credentials
 const authenticator = new IamAuthenticator({
@@ -12,9 +12,9 @@ const authenticator = new IamAuthenticator({
 });
 
 // Create DB and sync with remote DB
-const remoteDb: PouchDB = new PouchDB(`${import.meta.env.VITE_CLOUDANT_URL}`, {
+const remoteDb = new PouchDB(`${import.meta.env.VITE_CLOUDANT_URL}`, {
   fetch: async (url: any, opts: any) => {
-    const bearerOpts = {};
+    const bearerOpts: { headers: { [key: string]: string } } = { headers: {} };
     await authenticator.authenticate(bearerOpts);
     opts.headers.set("Authorization", bearerOpts["headers"]["Authorization"]);
     return PouchDB.fetch(url, opts);
@@ -33,7 +33,6 @@ remoteDb
 db.sync(remoteDb, {
   live: true,
   retry: true,
-  continuous: true,
 });
 
 // Create indexes for Mango
@@ -47,6 +46,5 @@ db.createIndex({
   index: { fields: ["parentId", "status"] },
 });
 db.createIndex({
-  index: { fields: ["parentId", "priority", "status"] },
-  ddoc: "parent-status-priority",
+  index: { fields: ["parentId", "priority", "status"], ddoc: "parent-status-priority" },
 });

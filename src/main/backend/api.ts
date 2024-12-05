@@ -17,8 +17,8 @@ export const api = {
     });
   },
   getAllTasks: async () => {
-    return await db.allDocs({ include_docs: true }).then((res) => {
-      return res.rows.map((row) => row.doc);
+    return await db.allDocs({ include_docs: true }).then((res: { rows: any[] }) => {
+      return res.rows.map((row: { doc: any }) => row.doc);
     });
   },
   getChildTasks: async (parentId: string) => {
@@ -29,7 +29,7 @@ export const api = {
         },
         sort: [{ priority: "desc" }, { status: "desc" }],
       })
-      .then((res) => {
+      .then((res: { docs: any }) => {
         return res.docs;
       });
   },
@@ -42,9 +42,8 @@ export const api = {
           status: { $gte: STATUS.IN_PROGRESS },
         },
         sort: [{ priority: "desc" }, { status: "desc" }],
-        using: "parent-status-priority",
       })
-      .then((res) => {
+      .then((res: { docs: any }) => {
         return res.docs;
       });
   },
@@ -56,7 +55,7 @@ export const api = {
           status: STATUS.COMPLETED,
         },
       })
-      .then((res) => {
+      .then((res: { docs: any }) => {
         return res.docs;
       });
   },
@@ -69,7 +68,7 @@ export const api = {
         },
         fields: ["_id"], // Only select the _id field to reduce data transfer
       })
-      .then((res) => {
+      .then((res: { docs: string | any[] }) => {
         return res.docs.length;
       });
   },
@@ -96,13 +95,13 @@ export const api = {
 
       const children = result.docs;
       await Promise.all(
-        children.map((child) => {
+        children.map((child: { _id: string }) => {
           recursiveDelete(child._id);
         }),
       );
 
       // Delete self
-      await db.get(parentId).then((doc) => {
+      await db.get(parentId).then((doc: any) => {
         db.remove(doc);
       });
     };

@@ -3,7 +3,7 @@ import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png";
 import { api } from "./backend/api";
-import { Priority, Status, Task } from "../renderer/src/types";
+import { Priority, Status, Task } from "../renderer/types";
 
 const createWindow = (): void => {
   // Create the browser window.
