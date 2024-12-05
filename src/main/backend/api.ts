@@ -1,4 +1,4 @@
-import { Priority, STATUS, Status, Task } from "../../renderer/src/types";
+import { Priority, STATUS, Status, Task } from "../../renderer/types";
 import { db } from "./db";
 
 const updateTaskField = async (id: string, field: Partial<Task>) => {
