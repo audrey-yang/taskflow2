@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, Typography } from "@mui/material";
 import Header from "./components/Header";
 import TaskList from "./components/TaskList";
+import Login from "./components/Login";
 import { STATUS } from "./types";
 
 const darkTheme = createTheme({
@@ -19,6 +20,8 @@ const darkTheme = createTheme({
 });
 
 const App: () => JSX.Element = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(window.sessionStorage.getItem("loggedIn") === "y");
+
   // Lift state out of Header for refresh
   const [numUnstartedTasks, setNumUnstartedTasks] = useState(0);
   const [numInProgressTasks, setNumInProgressTasks] = useState(0);
@@ -37,12 +40,18 @@ const App: () => JSX.Element = () => {
         <Typography variant="h3" className="my-2">
           Taskflow
         </Typography>
-        <Header
-          numUnstartedTasks={numUnstartedTasks}
-          numInProgressTasks={numInProgressTasks}
-          numCompletedTasks={numCompletedTasks}
-        />
-        <TaskList refreshHeader={getTaskCounts} />
+        {isLoggedIn ? (
+          <>
+            <Header
+              numUnstartedTasks={numUnstartedTasks}
+              numInProgressTasks={numInProgressTasks}
+              numCompletedTasks={numCompletedTasks}
+            />
+            <TaskList refreshHeader={getTaskCounts} />
+          </>
+        ) : (
+          <Login setIsLoggedIn={setIsLoggedIn} />
+        )}
       </div>
     </ThemeProvider>
   );

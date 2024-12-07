@@ -22,7 +22,7 @@ const Header = ({
         <Typography>Completed: {numCompletedTasks}</Typography>
       </div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DateCalendar sx={{ margin: 0 }} />
+        <DateCalendar sx={{ margin: 0 }} readOnly />
         <DateCalendar
           sx={{ margin: 0 }}
           readOnly

@@ -109,4 +109,7 @@ export const api = {
     // Recursively delete descendants
     await recursiveDelete(id);
   },
+  checkPassword: (password: string) => {
+    return password === import.meta.env.VITE_APP_PASSWORD;
+  },
 };
