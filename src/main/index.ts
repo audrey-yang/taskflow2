@@ -57,12 +57,6 @@ app.whenReady().then(() => {
   ipcMain.handle("createTask", async (_, task: Task) => {
     return await api.createTask(task);
   });
-  ipcMain.handle("getAllTasks", async (_) => {
-    return await api.getAllTasks();
-  });
-  ipcMain.handle("getChildTasks", async (_, parentId: string) => {
-    return await api.getChildTasks(parentId);
-  });
   ipcMain.handle("getChildTasksIncomplete", async (_, parentId: string) => {
     return await api.getChildTasksIncomplete(parentId);
   });

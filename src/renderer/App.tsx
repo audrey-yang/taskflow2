@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { lazy, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CssBaseline, Typography } from "@mui/material";
-import Header from "./components/Header";
-import TaskList from "./components/TaskList";
-import Login from "./components/Login";
+import CssBaseline from "@mui/material/CssBaseline";
+import Typography from "@mui/material/Typography";
 import { STATUS } from "./types";
+
+const Header = lazy(() => import("./components/Header"));
+const TaskList = lazy(() => import("./components/TaskList"));
+const Login = lazy(() => import("./components/Login"));
 
 const darkTheme = createTheme({
   palette: {

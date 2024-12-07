@@ -16,23 +16,6 @@ export const api = {
       _id: Date.now().toString(),
     });
   },
-  getAllTasks: async () => {
-    return await db.allDocs({ include_docs: true }).then((res: { rows: any[] }) => {
-      return res.rows.map((row: { doc: any }) => row.doc);
-    });
-  },
-  getChildTasks: async (parentId: string) => {
-    return await db
-      .find({
-        selector: {
-          parentId,
-        },
-        sort: [{ priority: "desc" }, { status: "desc" }],
-      })
-      .then((res: { docs: any }) => {
-        return res.docs;
-      });
-  },
   getChildTasksIncomplete: async (parentId: string) => {
     return await db
       .find({

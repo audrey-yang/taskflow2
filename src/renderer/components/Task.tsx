@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy } from "react";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -13,7 +13,8 @@ import CircleIcon from "@mui/icons-material/Circle";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Priority, priorityToColor, STATUS, Status } from "../types";
 import { notesEditor, prioritySelect, statusSelect, titleEditor } from "./EditComponents";
-import TaskList from "./TaskList";
+
+const TaskList = lazy(() => import("./TaskList"));
 
 const Task = ({
   _id,
