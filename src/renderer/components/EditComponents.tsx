@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
@@ -50,18 +51,24 @@ export const titleEditor = (
 );
 
 export const notesEditor = (
-  note: string,
-  setNote: (newNote: string) => void,
+  originalNote: string,
+  changeNote: (newNote: string) => Promise<void>,
   disabled: boolean,
-) => (
-  <TextField
-    spellCheck={true}
-    value={note}
-    onChange={(event) => setNote(event.target.value)}
-    className="w-10/12"
-    label={disabled ? "Note" : "Edit note"}
-    multiline
-    variant="filled"
-    disabled={disabled}
-  />
-);
+) => {
+  const [note, setNote] = useState(originalNote);
+  return (
+    <TextField
+      spellCheck={true}
+      value={note}
+      onChange={(event) => setNote(event.target.value)}
+      onBlur={async () => {
+        await changeNote(note);
+      }}
+      className="w-10/12"
+      label={disabled ? "Note" : "Edit note"}
+      multiline
+      variant="filled"
+      disabled={disabled}
+    />
+  );
+};

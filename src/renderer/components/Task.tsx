@@ -37,9 +37,6 @@ const Task = ({
   const [newTitle, setNewTitle] = useState(title);
   const [taskPriority, setTaskPriority] = useState(priority);
   const [taskStatus, setTaskStatus] = useState(status);
-  const [taskNote, setTaskNote] = useState(note);
-  const [isEditingNote, setIsEditingNote] = useState(false);
-  const [newNote, setNewNote] = useState(note);
 
   // Change handlers
   const changePriority = async (event: SelectChangeEvent) => {
@@ -61,8 +58,6 @@ const Task = ({
   };
   const changeNote = async (note: string) => {
     await window.api.changeTaskNote(_id, note);
-    setTaskNote(note);
-    setIsEditingNote(false);
   };
   const deleteTask = async () => {
     await window.api.deleteTask(_id);
@@ -133,27 +128,7 @@ const Task = ({
       <AccordionDetails>
         <div className="ml-4">
           <div className="flex flex-row mb-2">
-            {notesEditor(newNote, setNewNote, !isEditingNote)}
-            {isEditingNote ? (
-              <ButtonGroup size="small" aria-label="Submit or cancel">
-                <IconButton aria-label="done" onClick={() => changeNote(newNote)}>
-                  <DoneIcon />
-                </IconButton>
-                <IconButton
-                  aria-label="cancel"
-                  onClick={() => {
-                    setNewNote(taskNote);
-                    setIsEditingNote(false);
-                  }}
-                >
-                  <CancelIcon />
-                </IconButton>
-              </ButtonGroup>
-            ) : (
-              <IconButton aria-label="edit" onClick={() => setIsEditingNote(true)}>
-                <EditIcon />
-              </IconButton>
-            )}
+            {notesEditor(note, changeNote, taskStatus === STATUS.COMPLETED)}
           </div>
           <TaskList parentId={_id} parentIsCompleted={status == STATUS.COMPLETED} />
         </div>
