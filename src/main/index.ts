@@ -54,6 +54,9 @@ app.whenReady().then(() => {
   });
 
   // Set IPC handlers
+  ipcMain.handle("initDb", async (_, user: string) => {
+    return await api.initDb(user);
+  });
   ipcMain.handle("createTask", async (_, task: Task) => {
     return await api.createTask(task);
   });

@@ -1,5 +1,6 @@
 interface Window {
   api: {
+    initDb: (user: string) => Promise<any>;
     createTask: (task: Task) => Promise<any>;
     getChildTasksIncomplete: (parentId: string) => Promise<Task[]>;
     getChildTasksComplete: (parentId: string) => Promise<Task[]>;

@@ -1,4 +1,4 @@
-import { lazy, useState } from "react";
+import { lazy, useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
@@ -34,6 +34,15 @@ const App: () => JSX.Element = () => {
     setNumInProgressTasks(await window.api.countChildTasksByStatus("", STATUS.IN_PROGRESS));
     setNumCompletedTasks(await window.api.countChildTasksByStatus("", STATUS.COMPLETED));
   };
+
+  useEffect(() => {
+    const logIn = async () => {
+      if (isLoggedIn) {
+        await window.api.initDb(window.localStorage.getItem("username"));
+      }
+    };
+    logIn();
+  }, [isLoggedIn]);
 
   return (
     <ThemeProvider theme={darkTheme}>

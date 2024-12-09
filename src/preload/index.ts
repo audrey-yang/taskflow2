@@ -4,6 +4,7 @@ import { Priority, Status, Task } from "../renderer/types";
 
 // Custom APIs for renderer
 const api = {
+  initDb: (user: string) => ipcRenderer.invoke("initDb", user),
   createTask: (task: Task) => ipcRenderer.invoke("createTask", task),
   getChildTasksIncomplete: (parentId: string) =>
     ipcRenderer.invoke("getChildTasksIncomplete", parentId),

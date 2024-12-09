@@ -1,5 +1,10 @@
+import { app } from "electron";
+import path from "path";
+import PouchDB from "pouchdb";
+PouchDB.plugin(require("pouchdb-find"));
 import { Priority, STATUS, Status, Task } from "../../renderer/types";
-import { db } from "./db";
+
+let db: PouchDB.Database;
 
 const updateTaskField = async (id: string, field: Partial<Task>) => {
   const task = await db.get(id);
@@ -10,6 +15,46 @@ const updateTaskField = async (id: string, field: Partial<Task>) => {
 };
 
 export const api = {
+  initDb: async (user: string) => {
+    db = new PouchDB(path.join(app.getPath("sessionData"), "leveldb"));
+    const remoteDb = new PouchDB(`${import.meta.env.VITE_CLOUDANT_URL}_${user}`, {
+      auth: {
+        username: `${import.meta.env.VITE_CLOUDANT_USERNAME}`,
+        password: `${import.meta.env.VITE_CLOUDANT_PASSWORD}`,
+      },
+    });
+
+    remoteDb
+      .info()
+      .then((_) => {
+        console.log("Successfully connected to Cloudant");
+      })
+      .catch((err: any) => {
+        console.error(err);
+      });
+
+    db.sync(remoteDb, {
+      live: true,
+      retry: true,
+    });
+
+    // Create indexes for Mango
+    db.createIndex({
+      index: { fields: ["parentId"] },
+    });
+    db.createIndex({
+      index: { fields: ["status"] },
+    });
+    db.createIndex({
+      index: { fields: ["parentId", "status"] },
+    });
+    db.createIndex({
+      index: { fields: ["priority", "status"] },
+    });
+    db.createIndex({
+      index: { fields: ["parentId", "priority", "status"], ddoc: "parent-status-priority" },
+    });
+  },
   createTask: async (task: Task) => {
     return await db.put({
       ...task,
@@ -21,8 +66,8 @@ export const api = {
       .find({
         selector: {
           parentId,
-          priority: { $exists: true },
           status: { $gte: STATUS.IN_PROGRESS },
+          priority: { $exists: true },
         },
         sort: [{ priority: "desc" }, { status: "desc" }],
       })

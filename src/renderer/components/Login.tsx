@@ -10,6 +10,7 @@ const Login = ({ setIsLoggedIn }: { setIsLoggedIn: (isLoggedIn: boolean) => void
   const submitPassword = async () => {
     if (await window.api.checkPassword(password)) {
       window.localStorage.setItem("loggedIn", "y");
+      window.localStorage.setItem("username", password);
       setIsLoggedIn(true);
     } else {
       setHasError(true);
@@ -21,7 +22,6 @@ const Login = ({ setIsLoggedIn }: { setIsLoggedIn: (isLoggedIn: boolean) => void
     <div className="flex flex-row my-4">
       <TextField
         label={hasError ? "Try again" : "Enter password"}
-        spellCheck={true}
         onChange={(event) => setPassword(event.target.value)}
         className="w-1/2"
         error={hasError}
