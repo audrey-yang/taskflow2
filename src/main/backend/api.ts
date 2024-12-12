@@ -16,7 +16,7 @@ const updateTaskField = async (id: string, field: Partial<Task>) => {
 
 export const api = {
   initDb: async (user: string) => {
-    db = new PouchDB(path.join(app.getPath("sessionData"), "leveldb"));
+    db = new PouchDB(path.join(app.getPath("sessionData"), `leveldb_${user}`));
     const remoteDb = new PouchDB(`${import.meta.env.VITE_CLOUDANT_URL}_${user}`, {
       auth: {
         username: `${import.meta.env.VITE_CLOUDANT_USERNAME}`,

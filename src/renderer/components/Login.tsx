@@ -9,8 +9,14 @@ const Login = ({ setIsLoggedIn }: { setIsLoggedIn: (isLoggedIn: boolean) => void
 
   const submitPassword = async () => {
     if (await window.api.checkPassword(password)) {
-      window.localStorage.setItem("loggedIn", "y");
-      window.localStorage.setItem("username", password);
+      if (window.api.checkPassword(password)) {
+        window.localStorage.setItem("version", "0.1.5");
+        window.localStorage.setItem("loggedIn", "y");
+        window.localStorage.setItem("username", password);
+        setIsLoggedIn(true);
+      } else {
+        setHasError(true);
+      }
       setIsLoggedIn(true);
     } else {
       setHasError(true);

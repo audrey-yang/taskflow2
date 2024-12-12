@@ -22,7 +22,11 @@ const darkTheme = createTheme({
 });
 
 const App: () => JSX.Element = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(window.localStorage.getItem("loggedIn") === "y");
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    window.localStorage.getItem("loggedIn") === "y" &&
+      window.localStorage.getItem("username") != null &&
+      window.localStorage.getItem("version") === "0.1.5",
+  );
 
   // Lift state out of Header for refresh
   const [numUnstartedTasks, setNumUnstartedTasks] = useState(0);
