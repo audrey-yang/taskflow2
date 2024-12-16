@@ -3,6 +3,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import { STATUS } from "./types";
+import DuckClose from "./assets/duck-close.png";
+import DuckOpen from "./assets/duck-open.png";
 
 const Header = lazy(() => import("./components/Header"));
 const TaskList = lazy(() => import("./components/TaskList"));
@@ -22,6 +24,11 @@ const darkTheme = createTheme({
 });
 
 const App: () => JSX.Element = () => {
+  // Connection status
+  const [isConnected, setIsConnected] = useState(window.navigator.onLine);
+  window.addEventListener("online", () => setIsConnected(true));
+  window.addEventListener("offline", () => setIsConnected(false));
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     window.localStorage.getItem("loggedIn") === "y" &&
       window.localStorage.getItem("username") != null &&
@@ -51,10 +58,12 @@ const App: () => JSX.Element = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
+
       <div className="App">
-        <Typography variant="h3" className="my-2">
-          Taskflow
-        </Typography>
+        <div className="flex flex-row items-center">
+          <Typography variant="h2">Taskflow</Typography>
+          <img src={isConnected ? DuckOpen : DuckClose} alt="connection status" className="h-24" />
+        </div>
         {isLoggedIn ? (
           <>
             <Header
