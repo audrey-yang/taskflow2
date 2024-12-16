@@ -75,13 +75,15 @@ export const api = {
         return res.docs;
       });
   },
-  getChildTasksComplete: async (parentId: string) => {
+  getChildTasksComplete: async (parentId: string, pageNumber: number) => {
     return await db
       .find({
         selector: {
           parentId,
           status: STATUS.COMPLETED,
         },
+        skip: 10 * pageNumber,
+        limit: 10,
       })
       .then((res: { docs: any }) => {
         return res.docs;

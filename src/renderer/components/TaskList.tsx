@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
+import TablePagination from "@mui/material/TablePagination";
 import Task from "./Task";
 import NewTask from "./NewTask";
-import { DBTask } from "../types";
+import { DBTask, STATUS } from "../types";
 
 const TaskList = ({
   parentId,
@@ -17,11 +18,16 @@ const TaskList = ({
   const [incompleteTasks, setIncompleteTasks] = useState<DBTask[]>([]);
   const [completeTasks, setCompleteTasks] = useState<DBTask[]>([]);
   const [showCompleted, setShowCompleted] = useState(false);
+  const [pageNumber, setPageNumber] = useState(0);
+  const [numCompleted, setNumCompletedTasks] = useState(0);
 
   const populateTasks = async (tries?: number) => {
     try {
       setIncompleteTasks(await window.api.getChildTasksIncomplete(parentId ?? ""));
-      setCompleteTasks(await window.api.getChildTasksComplete(parentId ?? ""));
+      setCompleteTasks(await window.api.getChildTasksComplete(parentId ?? "", pageNumber));
+      setNumCompletedTasks(
+        await window.api.countChildTasksByStatus(parentId ?? "", STATUS.COMPLETED),
+      );
       if (!parentId) {
         // Refresh the header only at the top level
         refreshHeader();
@@ -42,7 +48,11 @@ const TaskList = ({
 
   useEffect(() => {
     populateTasks();
-  }, []);
+  }, [pageNumber]);
+
+  const handleChangePage = (_: any, newPage: number) => {
+    setPageNumber(newPage);
+  };
 
   return (
     <div>
@@ -60,9 +70,22 @@ const TaskList = ({
           >
             {showCompleted ? "Hide completed tasks" : "Show completed tasks"}
           </Button>
-          {showCompleted
-            ? completeTasks.map((task) => <Task key={task._id} {...task} refresh={populateTasks} />)
-            : null}
+          {showCompleted ? (
+            <div>
+              {completeTasks.map((task) => (
+                <Task key={task._id} {...task} refresh={populateTasks} />
+              ))}
+              <TablePagination
+                component="div"
+                page={pageNumber}
+                count={numCompleted}
+                className="mt-2"
+                onPageChange={handleChangePage}
+                rowsPerPage={10}
+                rowsPerPageOptions={[10]}
+              />
+            </div>
+          ) : null}
         </div>
       ) : null}
     </div>
