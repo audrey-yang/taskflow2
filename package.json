@@ -21,7 +21,8 @@
     "@mui/x-date-pickers": "^7.18.0",
     "dayjs": "^1.11.13",
     "pouchdb": "^9.0.0",
-    "pouchdb-find": "^9.0.0"
+    "pouchdb-find": "^9.0.0",
+    "react-router-dom": "^7.1.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "7.4.0",

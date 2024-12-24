@@ -33,7 +33,7 @@ export interface DBTask extends Task {
 
 export interface Note {
   title: string;
-  creationDate: string;
+  creationDate: number;
   content: string;
 }
 

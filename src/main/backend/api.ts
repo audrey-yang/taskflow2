@@ -2,7 +2,7 @@ import { app } from "electron";
 import path from "path";
 import PouchDB from "pouchdb";
 PouchDB.plugin(require("pouchdb-find"));
-import { Note, Priority, STATUS, Status, Task } from "../../renderer/types";
+import { DBNote, Note, Priority, STATUS, Status, Task } from "../../renderer/types";
 
 let tasksDb: PouchDB.Database;
 let notesDb: PouchDB.Database;
@@ -188,7 +188,7 @@ const getNoteById = async (id: string) => {
 
 const getAllNotes = async () => {
   return await notesDb.allDocs({ include_docs: true }).then((res: { rows: any }) => {
-    return res.rows.map((row: { doc: any }) => row.doc);
+    return res.rows.map((row: { doc: any }) => row.doc as DBNote);
   });
 };
 
