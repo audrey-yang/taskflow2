@@ -1,10 +1,10 @@
 import { contextBridge, ipcRenderer } from "electron";
 import { electronAPI } from "@electron-toolkit/preload";
-import { Priority, Status, Task } from "../renderer/types";
+import { Note, Priority, Status, Task } from "../renderer/types";
 
 // Custom APIs for renderer
 const api = {
-  initDb: (user: string) => ipcRenderer.invoke("initDb", user),
+  initDbs: (user: string) => ipcRenderer.invoke("initDbs", user),
   createTask: (task: Task) => ipcRenderer.invoke("createTask", task),
   getChildTasksIncomplete: (parentId: string) =>
     ipcRenderer.invoke("getChildTasksIncomplete", parentId),
@@ -20,6 +20,9 @@ const api = {
   changeTaskNote: (id: string, note: string) => ipcRenderer.invoke("changeTaskNote", id, note),
   deleteTask: (id: string) => ipcRenderer.invoke("deleteTask", id),
   checkPassword: (password: string) => ipcRenderer.invoke("checkPassword", password),
+  createNote: (note: Note) => ipcRenderer.invoke("createNote", note),
+  getNoteById: (id: string) => ipcRenderer.invoke("getNoteById", id),
+  getAllNotes: () => ipcRenderer.invoke("getAllNotes"),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

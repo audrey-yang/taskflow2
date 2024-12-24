@@ -1,6 +1,6 @@
 interface Window {
   api: {
-    initDb: (user: string) => Promise<any>;
+    initDbs: (user: string) => Promise<any>;
     createTask: (task: Task) => Promise<any>;
     getChildTasksIncomplete: (parentId: string) => Promise<Task[]>;
     getChildTasksComplete: (parentId: string, pageNumber: number) => Promise<Task[]>;
@@ -11,5 +11,8 @@ interface Window {
     changeTaskNote: (id: string, note: string) => Promise<any>;
     deleteTask: (id: string) => Promise<void>;
     checkPassword: (password: string) => Promise<boolean>;
+    createNote: (note: Note) => Promise<void>;
+    getNoteById: (id: string) => Promise<Note>;
+    getAllNotes: () => Promise<Note[]>;
   };
 }

@@ -54,8 +54,8 @@ app.whenReady().then(() => {
   });
 
   // Set IPC handlers
-  ipcMain.handle("initDb", async (_, user: string) => {
-    return await api.initDb(user);
+  ipcMain.handle("initDbs", async (_, user: string) => {
+    return await api.initDbs(user);
   });
   ipcMain.handle("createTask", async (_, task: Task) => {
     return await api.createTask(task);
@@ -86,6 +86,15 @@ app.whenReady().then(() => {
   });
   ipcMain.handle("checkPassword", async (_, password) => {
     return api.checkPassword(password);
+  });
+  ipcMain.handle("createNote", async (_, note) => {
+    return api.createNote(note);
+  });
+  ipcMain.handle("getNoteById", async (_, id) => {
+    return api.getNoteById(id);
+  });
+  ipcMain.handle("getAllNotes", async (_, note) => {
+    return api.getAllNotes();
   });
 
   createWindow();

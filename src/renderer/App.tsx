@@ -49,7 +49,7 @@ const App: () => JSX.Element = () => {
   useEffect(() => {
     const logIn = async () => {
       if (isLoggedIn) {
-        await window.api.initDb(window.localStorage.getItem("username"));
+        await window.api.initDbs(window.localStorage.getItem("username"));
       }
     };
     logIn();

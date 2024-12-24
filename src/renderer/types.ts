@@ -30,3 +30,14 @@ export interface DBTask extends Task {
   _id: string;
   _rev: string;
 }
+
+export interface Note {
+  title: string;
+  creationDate: string;
+  content: string;
+}
+
+export interface DBNote extends Note {
+  _id: string;
+  _rev: string;
+}
