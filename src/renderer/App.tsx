@@ -2,13 +2,11 @@ import { lazy, useState, useEffect } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import { STATUS } from "./types";
 import DuckClose from "./assets/duck-close.png";
 import DuckOpen from "./assets/duck-open.png";
+import Taskflow from "./pages/Taskflow";
 
-const Header = lazy(() => import("./components/Header"));
-const TaskList = lazy(() => import("./components/TaskList"));
-const Login = lazy(() => import("./components/Login"));
+const Login = lazy(() => import("./pages/Login"));
 
 const darkTheme = createTheme({
   palette: {
@@ -35,17 +33,6 @@ const App: () => JSX.Element = () => {
       window.localStorage.getItem("version") === "0.1.5",
   );
 
-  // Lift state out of Header for refresh
-  const [numUnstartedTasks, setNumUnstartedTasks] = useState(0);
-  const [numInProgressTasks, setNumInProgressTasks] = useState(0);
-  const [numCompletedTasks, setNumCompletedTasks] = useState(0);
-
-  const getTaskCounts = async () => {
-    setNumUnstartedTasks(await window.api.countChildTasksByStatus("", STATUS.NOT_STARTED));
-    setNumInProgressTasks(await window.api.countChildTasksByStatus("", STATUS.IN_PROGRESS));
-    setNumCompletedTasks(await window.api.countChildTasksByStatus("", STATUS.COMPLETED));
-  };
-
   useEffect(() => {
     const logIn = async () => {
       if (isLoggedIn) {
@@ -58,24 +45,12 @@ const App: () => JSX.Element = () => {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-
       <div className="App">
         <div className="flex flex-row items-center">
           <Typography variant="h2">Taskflow</Typography>
           <img src={isConnected ? DuckOpen : DuckClose} alt="connection status" className="h-24" />
         </div>
-        {isLoggedIn ? (
-          <>
-            <Header
-              numUnstartedTasks={numUnstartedTasks}
-              numInProgressTasks={numInProgressTasks}
-              numCompletedTasks={numCompletedTasks}
-            />
-            <TaskList refreshHeader={getTaskCounts} />
-          </>
-        ) : (
-          <Login setIsLoggedIn={setIsLoggedIn} />
-        )}
+        {isLoggedIn ? <Taskflow /> : <Login setIsLoggedIn={setIsLoggedIn} />}
       </div>
     </ThemeProvider>
   );
