@@ -1,10 +1,17 @@
-import { lazy, useState } from "react";
+import { lazy, useState, useEffect } from "react";
 import { STATUS } from "../types";
 
 const Header = lazy(() => import("../components/Header"));
 const TaskList = lazy(() => import("../components/TaskList"));
 
-const Taskflow: () => JSX.Element = () => {
+const Home: () => JSX.Element = () => {
+  useEffect(() => {
+    const logIn = async () => {
+      await window.api.initDbs(window.localStorage.getItem("username"));
+    };
+    logIn();
+  }, []);
+
   // Lift state out of Header for refresh
   const [numUnstartedTasks, setNumUnstartedTasks] = useState(0);
   const [numInProgressTasks, setNumInProgressTasks] = useState(0);
@@ -28,4 +35,4 @@ const Taskflow: () => JSX.Element = () => {
   );
 };
 
-export default Taskflow;
+export default Home;

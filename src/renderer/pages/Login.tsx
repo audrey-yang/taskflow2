@@ -2,22 +2,19 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import DoneIcon from "@mui/icons-material/Done";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ setIsLoggedIn }: { setIsLoggedIn: (isLoggedIn: boolean) => void }) => {
+const Login = () => {
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [hasError, setHasError] = useState(false);
 
   const submitPassword = async () => {
     if (await window.api.checkPassword(password)) {
-      if (window.api.checkPassword(password)) {
-        window.localStorage.setItem("version", "0.1.5");
-        window.localStorage.setItem("loggedIn", "y");
-        window.localStorage.setItem("username", password);
-        setIsLoggedIn(true);
-      } else {
-        setHasError(true);
-      }
-      setIsLoggedIn(true);
+      window.localStorage.setItem("version", "0.1.6");
+      window.localStorage.setItem("loggedIn", "y");
+      window.localStorage.setItem("username", password);
+      navigate("/home");
     } else {
       setHasError(true);
     }

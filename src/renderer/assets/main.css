@@ -7,5 +7,5 @@
 .App {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: 0 2rem;
 }

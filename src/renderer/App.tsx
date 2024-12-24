@@ -1,12 +1,16 @@
-import { lazy, useState, useEffect } from "react";
+import { useState } from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import DuckClose from "./assets/duck-close.png";
 import DuckOpen from "./assets/duck-open.png";
-import Taskflow from "./pages/Taskflow";
-
-const Login = lazy(() => import("./pages/Login"));
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import NoteList from "./pages/NoteList";
+import Note from "./pages/Note";
+import TabBar from "./components/TabBar";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,35 +26,49 @@ const darkTheme = createTheme({
 });
 
 const App: () => JSX.Element = () => {
+  const [openTabs, setOpenTabs] = useState([] as { _id: string; title: string }[]);
+  const addTab = (e: { _id: string; title: string }) => {
+    setOpenTabs((prev) => [...prev, e]);
+  };
+
+  const removeTab = (id: string) => {
+    setOpenTabs((prev) => {
+      const updated = prev.filter((it) => it._id !== id);
+      return updated;
+    });
+  };
+
   // Connection status
   const [isConnected, setIsConnected] = useState(window.navigator.onLine);
   window.addEventListener("online", () => setIsConnected(true));
   window.addEventListener("offline", () => setIsConnected(false));
 
-  const [isLoggedIn, setIsLoggedIn] = useState(
+  const isLoggedIn =
     window.localStorage.getItem("loggedIn") === "y" &&
-      window.localStorage.getItem("username") != null &&
-      window.localStorage.getItem("version") === "0.1.5",
-  );
-
-  useEffect(() => {
-    const logIn = async () => {
-      if (isLoggedIn) {
-        await window.api.initDbs(window.localStorage.getItem("username"));
-      }
-    };
-    logIn();
-  }, [isLoggedIn]);
+    window.localStorage.getItem("username") != null &&
+    window.localStorage.getItem("version") === "0.1.6";
 
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <div className="App">
+      <AppBar position="static" className="p-1">
         <div className="flex flex-row items-center">
-          <Typography variant="h2">Taskflow</Typography>
-          <img src={isConnected ? DuckOpen : DuckClose} alt="connection status" className="h-24" />
+          <img src={isConnected ? DuckOpen : DuckClose} alt="connection status" className="h-16" />
+          <Typography variant="h4" className="ml-5">
+            Taskflow
+          </Typography>
         </div>
-        {isLoggedIn ? <Taskflow /> : <Login setIsLoggedIn={setIsLoggedIn} />}
+      </AppBar>
+      <div className="App">
+        <HashRouter>
+          {isLoggedIn ? <TabBar openTabs={openTabs} removeTab={removeTab} /> : null}
+          <Routes>
+            <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/notes" element={<NoteList addTab={addTab} />} />
+            <Route path="/note/:id" element={<Note />} />
+          </Routes>
+        </HashRouter>
       </div>
     </ThemeProvider>
   );
