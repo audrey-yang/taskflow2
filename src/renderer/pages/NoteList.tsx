@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Link from "@mui/material/Link";
 
-const NoteList = ({ addTab }: { addTab: (note: { _id: string; title: string }) => void }) => {
+const NoteList = ({
+  addTab,
+  setActiveTab,
+}: {
+  addTab: (note: { _id: string; title: string }) => void;
+  setActiveTab: (_id: string) => void;
+}) => {
   const navigate = useNavigate();
   const [notes, setNotes] = useState([]);
 
@@ -20,8 +26,9 @@ const NoteList = ({ addTab }: { addTab: (note: { _id: string; title: string }) =
         <div key={note._id} className="px-8 my-2 w-full flex flex-row">
           <Link
             className="w-1/2"
-            onClick={(_) => {
+            onClick={() => {
               addTab({ _id: note._id, title: note.title });
+              setActiveTab(`/note/${note._id}`);
               navigate(`/note/${note._id}`);
             }}
           >

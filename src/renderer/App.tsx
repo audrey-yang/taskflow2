@@ -26,9 +26,15 @@ const darkTheme = createTheme({
 });
 
 const App: () => JSX.Element = () => {
+  const [activeTab, setActiveTab] = useState("/home");
   const [openTabs, setOpenTabs] = useState([] as { _id: string; title: string }[]);
   const addTab = (e: { _id: string; title: string }) => {
-    setOpenTabs((prev) => [...prev, e]);
+    setOpenTabs((prev) => {
+      if (prev.find((it) => it._id === e._id)) {
+        return prev;
+      }
+      return [...prev, e];
+    });
   };
 
   const removeTab = (id: string) => {
@@ -61,11 +67,21 @@ const App: () => JSX.Element = () => {
       </AppBar>
       <div className="App">
         <HashRouter>
-          {isLoggedIn ? <TabBar openTabs={openTabs} removeTab={removeTab} /> : null}
+          {isLoggedIn ? (
+            <TabBar
+              openTabs={openTabs}
+              removeTab={removeTab}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+            />
+          ) : null}
           <Routes>
             <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/notes" element={<NoteList addTab={addTab} />} />
+            <Route
+              path="/notes"
+              element={<NoteList addTab={addTab} setActiveTab={setActiveTab} />}
+            />
             <Route path="/note/:id" element={<Note />} />
           </Routes>
         </HashRouter>
