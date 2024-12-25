@@ -96,6 +96,12 @@ app.whenReady().then(() => {
   ipcMain.handle("getAllNotes", async (_, note) => {
     return api.getAllNotes();
   });
+  ipcMain.handle("changeNoteTitle", async (_, id, title) => {
+    return api.changeNoteTitle(id, title);
+  });
+  ipcMain.handle("changeNoteContent", async (_, id, content) => {
+    return api.changeNoteContent(id, content);
+  });
 
   createWindow();
 

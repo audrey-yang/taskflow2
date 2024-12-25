@@ -23,6 +23,9 @@ const api = {
   createNote: (note: Note) => ipcRenderer.invoke("createNote", note),
   getNoteById: (id: string) => ipcRenderer.invoke("getNoteById", id),
   getAllNotes: () => ipcRenderer.invoke("getAllNotes"),
+  changeNoteTitle: (id: string, title: string) => ipcRenderer.invoke("changeNoteTitle", id, title),
+  changeNoteContent: (id: string, content: string) =>
+    ipcRenderer.invoke("changeNoteContent", id, content),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

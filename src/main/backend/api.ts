@@ -188,8 +188,24 @@ const getNoteById = async (id: string) => {
 
 const getAllNotes = async () => {
   return await notesDb.allDocs({ include_docs: true }).then((res: { rows: any }) => {
-    return res.rows.map((row: { doc: any }) => row.doc as DBNote);
+    return res.rows.map((row: { doc: any }) => row.doc as { _id: string; title: string });
   });
+};
+
+const updateNoteField = async (id: string, field: Partial<Note>) => {
+  const note = await notesDb.get(id);
+  return await notesDb.put({
+    ...note,
+    ...field,
+  });
+};
+
+const changeNoteTitle = async (id: string, title: string) => {
+  return await updateNoteField(id, { title });
+};
+
+const changeNoteContent = async (id: string, content: string) => {
+  return await updateNoteField(id, { content });
 };
 
 export const api = {
@@ -207,4 +223,6 @@ export const api = {
   createNote,
   getNoteById,
   getAllNotes,
+  changeNoteTitle,
+  changeNoteContent,
 };

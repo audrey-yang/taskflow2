@@ -14,5 +14,7 @@ interface Window {
     createNote: (note: Note) => Promise<void>;
     getNoteById: (id: string) => Promise<Note>;
     getAllNotes: () => Promise<Note[]>;
+    changeNoteTitle: (id: string, title: string) => Promise<void>;
+    changeNoteContent: (id: string, content: string) => Promise<void>;
   };
 }
