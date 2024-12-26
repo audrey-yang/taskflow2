@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import DoneIcon from "@mui/icons-material/Done";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [hasError, setHasError] = useState(false);
@@ -14,6 +14,7 @@ const Login = () => {
       window.localStorage.setItem("version", "0.1.7");
       window.localStorage.setItem("loggedIn", "y");
       window.localStorage.setItem("username", password);
+      setIsLoggedIn(true);
       navigate("/");
     } else {
       setHasError(true);

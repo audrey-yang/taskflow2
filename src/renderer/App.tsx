@@ -49,6 +49,12 @@ const App: () => JSX.Element = () => {
   window.addEventListener("online", () => setIsConnected(true));
   window.addEventListener("offline", () => setIsConnected(false));
 
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    window.localStorage.getItem("loggedIn") === "y" &&
+      window.localStorage.getItem("username") != null &&
+      window.localStorage.getItem("version") === "0.1.7",
+  );
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -69,24 +75,13 @@ const App: () => JSX.Element = () => {
             setActiveTab={setActiveTab}
           />
           <Routes>
-            <Route
-              path="/"
-              element={
-                window.localStorage.getItem("loggedIn") === "y" &&
-                window.localStorage.getItem("username") != null &&
-                window.localStorage.getItem("version") === "0.1.7" ? (
-                  <Home />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
+            <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
             <Route
               path="/notes"
               element={<NoteList addTab={addTab} setActiveTab={setActiveTab} />}
             />
             <Route path="/note/:id" element={<Note />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
           </Routes>
         </HashRouter>
       </div>
