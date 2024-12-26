@@ -176,9 +176,11 @@ const checkPassword = (password: string) => {
 };
 
 const createNote = async (note: Note) => {
+  const date = Date.now();
   return await notesDb.put({
     ...note,
-    _id: Date.now().toString(),
+    creationDate: date,
+    _id: date.toString(),
   });
 };
 

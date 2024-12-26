@@ -1,6 +1,6 @@
 {
   "name": "taskflow2",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "a little task manager",
   "main": ".vite/build/main/index.js",
   "author": "@audrey-yang",

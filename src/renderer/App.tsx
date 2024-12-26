@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -49,11 +49,6 @@ const App: () => JSX.Element = () => {
   window.addEventListener("online", () => setIsConnected(true));
   window.addEventListener("offline", () => setIsConnected(false));
 
-  const isLoggedIn =
-    window.localStorage.getItem("loggedIn") === "y" &&
-    window.localStorage.getItem("username") != null &&
-    window.localStorage.getItem("version") === "0.1.6";
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
@@ -67,22 +62,31 @@ const App: () => JSX.Element = () => {
       </AppBar>
       <div className="App">
         <HashRouter>
-          {isLoggedIn ? (
-            <TabBar
-              openTabs={openTabs}
-              removeTab={removeTab}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-            />
-          ) : null}
+          <TabBar
+            openTabs={openTabs}
+            removeTab={removeTab}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+          />
           <Routes>
-            <Route path="/" element={isLoggedIn ? <Home /> : <Login />} />
-            <Route path="/home" element={<Home />} />
+            <Route
+              path="/"
+              element={
+                window.localStorage.getItem("loggedIn") === "y" &&
+                window.localStorage.getItem("username") != null &&
+                window.localStorage.getItem("version") === "0.1.7" ? (
+                  <Home />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
             <Route
               path="/notes"
               element={<NoteList addTab={addTab} setActiveTab={setActiveTab} />}
             />
             <Route path="/note/:id" element={<Note />} />
+            <Route path="/login" element={<Login />} />
           </Routes>
         </HashRouter>
       </div>

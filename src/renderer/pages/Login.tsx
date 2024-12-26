@@ -11,10 +11,10 @@ const Login = () => {
 
   const submitPassword = async () => {
     if (await window.api.checkPassword(password)) {
-      window.localStorage.setItem("version", "0.1.6");
+      window.localStorage.setItem("version", "0.1.7");
       window.localStorage.setItem("loggedIn", "y");
       window.localStorage.setItem("username", password);
-      navigate("/home");
+      navigate("/");
     } else {
       setHasError(true);
     }

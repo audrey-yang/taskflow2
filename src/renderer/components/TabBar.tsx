@@ -18,6 +18,10 @@ const TabBar = ({
   const navigate = useNavigate();
   const location = useLocation();
 
+  if (location.pathname === "/login") {
+    return null;
+  }
+
   return (
     <Tabs
       value={location.pathname}
@@ -28,7 +32,7 @@ const TabBar = ({
       scrollButtons="auto"
       className="mb-4"
     >
-      <Tab key="tasks" label="Tasks" value="/home" to="/home" component={Link} />
+      <Tab key="tasks" label="Tasks" value="/" to="/" component={Link} />
       <Tab key="notes" label="Notes" value="/notes" to="/notes" component={Link} />
       {openTabs.map((tab) => (
         <Tab
