@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -8,9 +7,6 @@ import DuckClose from "./assets/duck-close.png";
 import DuckOpen from "./assets/duck-open.png";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import NoteList from "./pages/NoteList";
-import Note from "./pages/Note";
-import TabBar from "./components/TabBar";
 
 const darkTheme = createTheme({
   palette: {
@@ -26,24 +22,6 @@ const darkTheme = createTheme({
 });
 
 const App: () => JSX.Element = () => {
-  const [activeTab, setActiveTab] = useState("/home");
-  const [openTabs, setOpenTabs] = useState([] as { _id: string; title: string }[]);
-  const addTab = (e: { _id: string; title: string }) => {
-    setOpenTabs((prev) => {
-      if (prev.find((it) => it._id === e._id)) {
-        return prev;
-      }
-      return [...prev, e];
-    });
-  };
-
-  const removeTab = (id: string) => {
-    setOpenTabs((prev) => {
-      const updated = prev.filter((it) => it._id !== id);
-      return updated;
-    });
-  };
-
   // Connection status
   const [isConnected, setIsConnected] = useState(window.navigator.onLine);
   window.addEventListener("online", () => setIsConnected(true));
@@ -52,7 +30,7 @@ const App: () => JSX.Element = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(
     window.localStorage.getItem("loggedIn") === "y" &&
       window.localStorage.getItem("username") != null &&
-      window.localStorage.getItem("version") === "0.1.7",
+      window.localStorage.getItem("version") === "0.2.0",
   );
 
   return (
@@ -66,25 +44,7 @@ const App: () => JSX.Element = () => {
           </Typography>
         </div>
       </AppBar>
-      <div className="App">
-        <HashRouter>
-          <TabBar
-            openTabs={openTabs}
-            removeTab={removeTab}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
-          <Routes>
-            <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
-            <Route
-              path="/notes"
-              element={<NoteList addTab={addTab} setActiveTab={setActiveTab} />}
-            />
-            <Route path="/note/:id" element={<Note />} />
-            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
-          </Routes>
-        </HashRouter>
-      </div>
+      <div className="App">{isLoggedIn ? <Home /> : <Login setIsLoggedIn={setIsLoggedIn} />}</div>
     </ThemeProvider>
   );
 };
