@@ -2,7 +2,7 @@ import { lazy, useState, useEffect } from "react";
 import { STATUS } from "../types";
 
 const Header = lazy(() => import("../components/Header"));
-const TaskList = lazy(() => import("../components/TaskList"));
+const TaskList = lazy(() => import("../components/tasks/TaskList"));
 
 const Home: () => JSX.Element = () => {
   useEffect(() => {

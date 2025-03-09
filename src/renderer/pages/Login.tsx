@@ -2,10 +2,10 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import DoneIcon from "@mui/icons-material/Done";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Login = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [hasError, setHasError] = useState(false);
 
@@ -15,7 +15,7 @@ const Login = ({ setIsLoggedIn }: { setIsLoggedIn: (value: boolean) => void }) =
       window.localStorage.setItem("loggedIn", "y");
       window.localStorage.setItem("username", password);
       setIsLoggedIn(true);
-      navigate("/");
+      // navigate("/");
     } else {
       setHasError(true);
     }
