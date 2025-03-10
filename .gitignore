@@ -7,5 +7,4 @@ out
 vite
 .vite
 .env
-tasks*
 secrets
