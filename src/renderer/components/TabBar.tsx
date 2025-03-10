@@ -7,13 +7,9 @@ import CloseIcon from "@mui/icons-material/Close";
 const TabBar = ({
   openTabs,
   removeTab,
-  activeTab,
-  setActiveTab,
 }: {
   openTabs: { _id: string; title: string }[];
   removeTab: (_id: string) => void;
-  activeTab: string;
-  setActiveTab: (path: string) => void;
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,15 +19,7 @@ const TabBar = ({
   }
 
   return (
-    <Tabs
-      value={location.pathname}
-      onChange={(_, newVal) => {
-        setActiveTab(newVal);
-      }}
-      variant="scrollable"
-      scrollButtons="auto"
-      className="mb-4"
-    >
+    <Tabs value={location.pathname} variant="scrollable" scrollButtons="auto" className="mb-4">
       <Tab key="tasks" label="Tasks" value="/" to="/" component={Link} />
       <Tab key="notes" label="Notes" value="/notes" to="/notes" component={Link} />
       {openTabs.map((tab) => (
@@ -42,15 +30,16 @@ const TabBar = ({
               {tab.title}
               <IconButton
                 onClick={async (event) => {
+                  event.preventDefault();
                   event.stopPropagation();
                   if (location.pathname === `/note/${tab._id}`) {
-                    const redir = openTabs.length > 1 ? `/note/${openTabs[-1]._id}` : "/notes";
-                    await navigate(redir, { replace: true });
-                    setActiveTab(redir);
-                  } else {
-                    await navigate(activeTab, { replace: true });
+                    let redir = "/notes";
+                    if (openTabs.length > 1 && tab._id !== openTabs[0]._id) {
+                      const idx = openTabs.findIndex((it) => it._id === tab._id);
+                      redir = `/note/${openTabs[idx - 1]._id}`;
+                    }
+                    navigate(redir);
                   }
-                  await navigate(0);
                   removeTab(tab._id);
                 }}
                 sx={{ padding: 0 }}

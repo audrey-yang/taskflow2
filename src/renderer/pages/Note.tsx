@@ -17,7 +17,7 @@ const Note = () => {
       setContent(note.content);
     };
     fetchNote();
-  }, []);
+  }, [id]);
 
   return (
     <div className="w-full">

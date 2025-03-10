@@ -7,13 +7,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import TextField from "@mui/material/TextField";
 
-const NoteList = ({
-  addTab,
-  setActiveTab,
-}: {
-  addTab: (note: { _id: string; title: string }) => void;
-  setActiveTab: (_id: string) => void;
-}) => {
+const NoteList = ({ addTab }: { addTab: (note: { _id: string; title: string }) => void }) => {
   const navigate = useNavigate();
   const [notes, setNotes] = useState([]);
   const [newNoteTitle, setNewNoteTitle] = useState("");
@@ -76,7 +70,6 @@ const NoteList = ({
             className="w-1/2"
             onClick={() => {
               addTab({ _id: note._id, title: note.title });
-              setActiveTab(`/note/${note._id}`);
               navigate(`/note/${note._id}`);
             }}
           >
