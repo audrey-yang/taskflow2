@@ -6,6 +6,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import TextField from "@mui/material/TextField";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const NoteList = ({ addTab }: { addTab: (note: { _id: string; title: string }) => void }) => {
   const navigate = useNavigate();
@@ -68,6 +69,7 @@ const NoteList = ({ addTab }: { addTab: (note: { _id: string; title: string }) =
         <div key={note._id} className="px-8 my-2 w-full flex flex-row">
           <Link
             className="w-1/2"
+            style={{ margin: "auto" }}
             onClick={() => {
               addTab({ _id: note._id, title: note.title });
               navigate(`/note/${note._id}`);
@@ -76,7 +78,18 @@ const NoteList = ({ addTab }: { addTab: (note: { _id: string; title: string }) =
             {note.title}
           </Link>
           <div className="w-1/2 flex flex-row justify-end">
-            {new Date(note.creationDate).toLocaleString("en-US", { timeZone: "CST" })}
+            <span className="w-1/2 my-auto">
+              {new Date(note.creationDate).toLocaleString("en-US", { timeZone: "CST" })}
+            </span>
+            <IconButton
+              onClick={async () => {
+                console.log(note);
+                await window.api.deleteNote(note._id);
+                getNotes();
+              }}
+            >
+              <DeleteIcon />
+            </IconButton>
           </div>
         </div>
       ))}

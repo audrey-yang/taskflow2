@@ -102,6 +102,9 @@ app.whenReady().then(() => {
   ipcMain.handle("changeNoteContent", async (_, id, content) => {
     return api.changeNoteContent(id, content);
   });
+  ipcMain.handle("deleteNote", async (_, id) => {
+    return api.deleteNote(id);
+  });
 
   createWindow();
 

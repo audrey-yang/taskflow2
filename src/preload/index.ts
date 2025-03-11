@@ -26,6 +26,7 @@ const api = {
   changeNoteTitle: (id: string, title: string) => ipcRenderer.invoke("changeNoteTitle", id, title),
   changeNoteContent: (id: string, content: string) =>
     ipcRenderer.invoke("changeNoteContent", id, content),
+  deleteNote: (id: string) => ipcRenderer.invoke("deleteNote", id),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

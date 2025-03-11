@@ -210,6 +210,12 @@ const changeNoteContent = async (id: string, content: string) => {
   return await updateNoteField(id, { content });
 };
 
+const deleteNote = async (id: string) => {
+  await notesDb.get(id).then((doc: any) => {
+    notesDb.remove(doc);
+  });
+};
+
 export const api = {
   initDbs,
   createTask,
@@ -227,4 +233,5 @@ export const api = {
   getAllNotes,
   changeNoteTitle,
   changeNoteContent,
+  deleteNote,
 };
