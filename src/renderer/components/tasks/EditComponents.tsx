@@ -69,6 +69,18 @@ export const notesEditor = (
       multiline
       variant="filled"
       disabled={disabled}
+      onKeyDown={(e: React.KeyboardEvent) => {
+        if (e.key === "Tab") {
+          e.preventDefault();
+          const cursorPosition = e.target.selectionStart;
+          const cursorEndPosition = e.target.selectionEnd;
+          e.target.value =
+            note.substring(0, cursorPosition) + "\t" + note.substring(cursorEndPosition);
+          e.target.selectionStart = cursorPosition + 1;
+          e.target.selectionEnd = cursorPosition + 1;
+          setNote(e.target.value);
+        }
+      }}
     />
   );
 };

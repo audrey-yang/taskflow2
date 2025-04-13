@@ -41,7 +41,13 @@ const Note = () => {
         onKeyDown={(e: React.KeyboardEvent) => {
           if (e.key === "Tab") {
             e.preventDefault();
-            setContent(content + "\t");
+            const cursorPosition = e.target.selectionStart;
+            const cursorEndPosition = e.target.selectionEnd;
+            e.target.value =
+              content.substring(0, cursorPosition) + "\t" + content.substring(cursorEndPosition);
+            e.target.selectionStart = cursorPosition + 1;
+            e.target.selectionEnd = cursorPosition + 1;
+            setContent(e.target.value);
           }
         }}
       />
