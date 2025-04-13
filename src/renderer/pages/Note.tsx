@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
@@ -38,6 +38,12 @@ const Note = () => {
         multiline
         minRows={10}
         variant="filled"
+        onKeyDown={(e: React.KeyboardEvent) => {
+          if (e.key === "Tab") {
+            e.preventDefault();
+            setContent(content + "\t");
+          }
+        }}
       />
     </div>
   );
