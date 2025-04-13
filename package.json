@@ -20,7 +20,10 @@
     "@mui/icons-material": "^6.1.0",
     "@mui/material": "^6.1.0",
     "@mui/x-date-pickers": "^7.18.0",
+    "axios": "^1.8.4",
     "dayjs": "^1.11.13",
+    "jwt-decode": "^4.0.0",
+    "keytar": "^7.9.0",
     "pouchdb": "^9.0.0",
     "pouchdb-find": "^9.0.0",
     "react-router-dom": "^7.1.1"

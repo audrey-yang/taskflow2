@@ -27,6 +27,9 @@ const api = {
   changeNoteContent: (id: string, content: string) =>
     ipcRenderer.invoke("changeNoteContent", id, content),
   deleteNote: (id: string) => ipcRenderer.invoke("deleteNote", id),
+  getProfile: () => ipcRenderer.invoke("auth:get-profile"),
+  logOut: () => ipcRenderer.send("auth:log-out"),
+  getPrivateData: () => ipcRenderer.invoke("auth:get-private-data"),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

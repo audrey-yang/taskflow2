@@ -4,8 +4,11 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png";
 import { api } from "./backend/api";
 import { Priority, Status, Task } from "../renderer/types";
+import * as authService from "./auth/auth-service";
+import { createAuthWindow, createLogoutWindow } from "./auth/auth-process";
+import { getPrivateData } from "./auth/get-auth";
 
-const createWindow = (): void => {
+export const createMainWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 900,
@@ -32,12 +35,22 @@ const createWindow = (): void => {
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
-  if (is.dev && process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]) {
-    mainWindow.loadURL(process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]);
-  } else {
-    mainWindow.loadFile(join(__dirname, `../../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
-  }
+  // if (is.dev && process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]) {
+  //   mainWindow.loadURL(process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]);
+  // } else {
+  //   mainWindow.loadFile(join(__dirname, `../../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+  // }
+  mainWindow.loadFile(join(__dirname, `../../../src/renderer/home.html`));
 };
+
+async function showWindow() {
+  try {
+    await authService.refreshTokens();
+    createMainWindow();
+  } catch (err) {
+    createAuthWindow();
+  }
+}
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -106,12 +119,17 @@ app.whenReady().then(() => {
     return api.deleteNote(id);
   });
 
-  createWindow();
+  ipcMain.handle("auth:get-profile", authService.getProfile);
+  ipcMain.handle("auth:get-private-data", getPrivateData);
+  ipcMain.on("auth:log-out", () => {
+    BrowserWindow.getAllWindows().forEach((window) => window.close());
+    createLogoutWindow();
+  });
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) showWindow();
   });
 });
 
