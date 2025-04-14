@@ -3,12 +3,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import DuckClose from "./assets/duck-close.png";
 import DuckOpen from "./assets/duck-open.png";
 import TabBar from "./components/TabBar";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
 import NoteList from "./pages/NoteList";
 import Note from "./pages/Note";
 
@@ -30,12 +29,6 @@ const App: () => JSX.Element = () => {
   const [isConnected, setIsConnected] = useState(window.navigator.onLine);
   window.addEventListener("online", () => setIsConnected(true));
   window.addEventListener("offline", () => setIsConnected(false));
-
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    window.localStorage.getItem("loggedIn") === "y" &&
-      window.localStorage.getItem("username") != null &&
-      window.localStorage.getItem("version") === "0.2.3",
-  );
 
   // Tabs
   const [openTabs, setOpenTabs] = useState([] as { _id: string; title: string }[]);
@@ -70,10 +63,9 @@ const App: () => JSX.Element = () => {
         <HashRouter>
           <TabBar openTabs={openTabs} removeTab={removeTab} />
           <Routes>
-            <Route path="/" element={isLoggedIn ? <Home /> : <Navigate to="/login" />} />
+            <Route path="/" element={<Home />} />
             <Route path="/notes" element={<NoteList addTab={addTab} />} />
             <Route path="/note/:id" element={<Note />} />
-            <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
           </Routes>
         </HashRouter>
       </div>

@@ -2,7 +2,7 @@ import { app } from "electron";
 import path from "path";
 import PouchDB from "pouchdb";
 PouchDB.plugin(require("pouchdb-find"));
-import { DBNote, Note, Priority, STATUS, Status, Task } from "../../renderer/types";
+import { Note, Priority, STATUS, Status, Task } from "../../renderer/types";
 
 let tasksDb: PouchDB.Database;
 let notesDb: PouchDB.Database;
@@ -16,6 +16,7 @@ const updateTaskField = async (id: string, field: Partial<Task>) => {
 };
 
 const initDbs = async (user: string) => {
+  user = user.replaceAll("@", "$a").replaceAll(".", "$d");
   tasksDb = new PouchDB(path.join(app.getPath("sessionData"), `leveldb_tasks_${user}`));
   const remoteTasksDb = new PouchDB(`${import.meta.env.VITE_CLOUDANT_URL}tasks_${user}`, {
     auth: {

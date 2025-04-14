@@ -5,7 +5,7 @@ import keytar from "keytar";
 import os from "os";
 
 const redirectUri = "http://localhost/callback";
-const apiIdentifier = import.meta.env.VITE_AUTH0_API_IDENTIFIER;
+const apiIdentifier = import.meta.env.VITE_CLOUDANT_URL;
 const auth0Domain = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
 
@@ -25,7 +25,7 @@ export const getProfile = () => {
 };
 
 export const getAuthenticationURL = () => {
-  return `https://${auth0Domain}/authorize?scope=openid profile offline_access&response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
+  return `https://${auth0Domain}/authorize?audience=${apiIdentifier}&scope=openid profile offline_access&response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}`;
 };
 
 export const refreshTokens = async () => {

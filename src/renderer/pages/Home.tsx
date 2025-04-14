@@ -6,9 +6,10 @@ const TaskList = lazy(() => import("../components/tasks/TaskList"));
 
 const Home: () => JSX.Element = () => {
   useEffect(() => {
-    const logIn = async () => {
-      await window.api.initDbs(window.localStorage.getItem("username"));
-    };
+    const logIn = async () =>
+      window.api.getProfile().then(async (res) => {
+        await window.api.initDbs(res.name);
+      });
     logIn();
   }, []);
 

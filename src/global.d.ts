@@ -17,5 +17,7 @@ interface Window {
     changeNoteTitle: (id: string, title: string) => Promise<void>;
     changeNoteContent: (id: string, content: string) => Promise<void>;
     deleteNote: (id: string) => Promise<void>;
+    getProfile: () => Promise<JwtPayload>;
+    logOut: () => Promise<void>;
   };
 }
