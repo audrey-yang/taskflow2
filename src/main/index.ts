@@ -6,7 +6,6 @@ import { api } from "./backend/api";
 import { Priority, Status, Task } from "../renderer/types";
 import * as authService from "./auth/auth-service";
 import { createAuthWindow, createLogoutWindow } from "./auth/auth-process";
-import { getPrivateData } from "./auth/get-auth";
 
 export const createMainWindow = (): void => {
   // Create the browser window.
@@ -35,12 +34,11 @@ export const createMainWindow = (): void => {
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
-  // if (is.dev && process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]) {
-  //   mainWindow.loadURL(process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]);
-  // } else {
-  //   mainWindow.loadFile(join(__dirname, `../../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
-  // }
-  mainWindow.loadFile(join(__dirname, `../../../src/renderer/home.html`));
+  if (is.dev && process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]) {
+    mainWindow.loadURL(process.env["MAIN_WINDOW_VITE_DEV_SERVER_URL"]);
+  } else {
+    mainWindow.loadFile(join(__dirname, `../../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+  }
 };
 
 async function showWindow() {
@@ -120,7 +118,6 @@ app.whenReady().then(() => {
   });
 
   ipcMain.handle("auth:get-profile", authService.getProfile);
-  ipcMain.handle("auth:get-private-data", getPrivateData);
   ipcMain.on("auth:log-out", () => {
     BrowserWindow.getAllWindows().forEach((window) => window.close());
     createLogoutWindow();
