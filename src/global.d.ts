@@ -10,7 +10,6 @@ interface Window {
     changeTaskTitle: (id: string, title: string) => Promise<any>;
     changeTaskNote: (id: string, note: string) => Promise<any>;
     deleteTask: (id: string) => Promise<void>;
-    checkPassword: (password: string) => Promise<boolean>;
     createNote: (note: Note) => Promise<void>;
     getNoteById: (id: string) => Promise<Note>;
     getAllNotes: () => Promise<Note[]>;

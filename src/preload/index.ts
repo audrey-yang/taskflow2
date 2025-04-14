@@ -19,7 +19,6 @@ const api = {
   changeTaskTitle: (id: string, title: string) => ipcRenderer.invoke("changeTaskTitle", id, title),
   changeTaskNote: (id: string, note: string) => ipcRenderer.invoke("changeTaskNote", id, note),
   deleteTask: (id: string) => ipcRenderer.invoke("deleteTask", id),
-  checkPassword: (password: string) => ipcRenderer.invoke("checkPassword", password),
   createNote: (note: Note) => ipcRenderer.invoke("createNote", note),
   getNoteById: (id: string) => ipcRenderer.invoke("getNoteById", id),
   getAllNotes: () => ipcRenderer.invoke("getAllNotes"),

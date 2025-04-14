@@ -172,10 +172,6 @@ const deleteTask = async (id: string) => {
   await recursiveDelete(id);
 };
 
-const checkPassword = (password: string) => {
-  return password === import.meta.env.VITE_APP_PASSWORD;
-};
-
 const createNote = async (note: Note) => {
   const date = Date.now();
   return await notesDb.put({
@@ -228,7 +224,6 @@ export const api = {
   changeTaskTitle,
   changeTaskNote,
   deleteTask,
-  checkPassword,
   createNote,
   getNoteById,
   getAllNotes,

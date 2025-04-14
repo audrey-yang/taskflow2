@@ -95,9 +95,6 @@ app.whenReady().then(() => {
   ipcMain.handle("deleteTask", async (_, id: string) => {
     return await api.deleteTask(id);
   });
-  ipcMain.handle("checkPassword", async (_, password) => {
-    return api.checkPassword(password);
-  });
   ipcMain.handle("createNote", async (_, note) => {
     return api.createNote(note);
   });
