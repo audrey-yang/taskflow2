@@ -3,6 +3,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import DuckClose from "./assets/duck-close.png";
 import DuckOpen from "./assets/duck-open.png";
@@ -52,11 +53,26 @@ const App: () => JSX.Element = () => {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <AppBar position="static" className="p-1">
-        <div className="flex flex-row items-center">
-          <img src={isConnected ? DuckOpen : DuckClose} alt="connection status" className="h-16" />
-          <Typography variant="h4" className="ml-5">
-            Taskflow
-          </Typography>
+        <div className="flex flex-row place-content-between w-full">
+          <div className="flex flex-row items-center">
+            <img
+              src={isConnected ? DuckOpen : DuckClose}
+              alt="connection status"
+              className="h-16"
+            />
+            <Typography variant="h4" className="ml-5">
+              Taskflow
+            </Typography>
+          </div>
+          <div className="flex">
+            <Button
+              onClick={async () => {
+                await window.api.logOut();
+              }}
+            >
+              Log out
+            </Button>
+          </div>
         </div>
       </AppBar>
       <div className="App">

@@ -1,11 +1,11 @@
-import { app, shell, BrowserWindow, ipcMain } from "electron";
+import { app, shell, BrowserWindow, ipcMain, protocol } from "electron";
 import { join } from "path";
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import icon from "../../resources/icon.png";
 import { api } from "./backend/api";
 import { Priority, Status, Task } from "../renderer/types";
 import * as authService from "./auth/auth-service";
-import { createAuthWindow, createLogoutWindow } from "./auth/auth-process";
+import { createAuthWindow, createLogoutWindow, destroyAuthWindow } from "./auth/auth-process";
 
 export const createMainWindow = (): void => {
   // Create the browser window.
@@ -125,6 +125,14 @@ app.whenReady().then(() => {
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) showWindow();
   });
+
+  protocol.handle("taskflow", async (request) => {
+    const { url } = request;
+    await authService.loadTokens(url);
+    createMainWindow();
+    destroyAuthWindow();
+    return new Response(null);
+  });
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -135,6 +143,8 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
+
+// app.disableHardwareAcceleration();
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.

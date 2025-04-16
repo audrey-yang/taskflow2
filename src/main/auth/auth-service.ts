@@ -4,10 +4,10 @@ import url from "url";
 import keytar from "keytar";
 import os from "os";
 
-const redirectUri = "http://localhost/callback";
 const apiIdentifier = import.meta.env.VITE_CLOUDANT_URL;
 const auth0Domain = import.meta.env.VITE_AUTH0_DOMAIN;
 const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
+const redirectUri = "taskflow://callback";
 
 const keytarService = "electron-openid-oauth";
 const keytarAccount = os.userInfo().username;
@@ -88,7 +88,6 @@ export const loadTokens = async (callbackURL: string) => {
     }
   } catch (error) {
     await logout();
-
     throw error;
   }
 };

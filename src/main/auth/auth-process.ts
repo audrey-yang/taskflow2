@@ -40,7 +40,7 @@ export const createAuthWindow = () => {
   });
 };
 
-const destroyAuthWindow = () => {
+export const destroyAuthWindow = () => {
   if (!window) {
     return;
   }
@@ -58,5 +58,6 @@ export const createLogoutWindow = () => {
   logoutWindow.on("ready-to-show", async () => {
     await authService.logout();
     logoutWindow.close();
+    createAuthWindow();
   });
 };
