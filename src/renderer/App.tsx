@@ -31,6 +31,12 @@ const App: () => JSX.Element = () => {
   window.addEventListener("online", () => setIsConnected(true));
   window.addEventListener("offline", () => setIsConnected(false));
 
+  // Sync status
+  const [lastSyncTime, setLastSyncTime] = useState("N/A");
+  window.addEventListener("storage", () => {
+    setLastSyncTime(localStorage.getItem("lastSyncTime"));
+  });
+
   // Tabs
   const [openTabs, setOpenTabs] = useState([] as { _id: string; title: string }[]);
   const addTab = (e: { _id: string; title: string }) => {
@@ -73,6 +79,9 @@ const App: () => JSX.Element = () => {
               Log out
             </Button>
           </div>
+        </div>
+        <div className="bg-gray-400 bg-opacity-10">
+          <p className="mx-6 my-2 text-sm">Last synced: {lastSyncTime}</p>
         </div>
       </AppBar>
       <div className="App">

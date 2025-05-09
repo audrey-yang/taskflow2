@@ -39,6 +39,10 @@ export const createMainWindow = (): void => {
   } else {
     mainWindow.loadFile(join(__dirname, `../../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
+
+  ipcMain.handle("initDbs", async (_, user: string) => {
+    return await api.initDbs(user, mainWindow);
+  });
 };
 
 async function showWindow() {
@@ -65,9 +69,6 @@ app.whenReady().then(() => {
   });
 
   // Set IPC handlers
-  ipcMain.handle("initDbs", async (_, user: string) => {
-    return await api.initDbs(user);
-  });
   ipcMain.handle("createTask", async (_, task: Task) => {
     return await api.createTask(task);
   });

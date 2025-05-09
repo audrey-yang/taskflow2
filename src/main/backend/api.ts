@@ -1,4 +1,4 @@
-import { app } from "electron";
+import { app, BrowserWindow } from "electron";
 import path from "path";
 import PouchDB from "pouchdb";
 PouchDB.plugin(require("pouchdb-find"));
@@ -15,7 +15,18 @@ const updateTaskField = async (id: string, field: Partial<Task>) => {
   });
 };
 
-const initDbs = async (user: string) => {
+const writeLastSyncTime = async (mainWindow: BrowserWindow) => {
+  const now: Date = new Date();
+  await mainWindow.webContents
+    .executeJavaScript(
+      `localStorage.setItem("lastSyncTime", "${now.toLocaleString()}");
+            window.dispatchEvent(new Event("storage"));`,
+      false,
+    )
+    .catch((err) => console.log(err));
+};
+
+const initDbs = async (user: string, mainWindow: BrowserWindow) => {
   user = user.replaceAll("@", "$a").replaceAll(".", "$d");
   tasksDb = new PouchDB(path.join(app.getPath("sessionData"), `leveldb_tasks_${user}`));
   const remoteTasksDb = new PouchDB(`${import.meta.env.VITE_CLOUDANT_URL}tasks_${user}`, {
@@ -34,10 +45,17 @@ const initDbs = async (user: string) => {
       console.error(err);
     });
 
-  tasksDb.sync(remoteTasksDb, {
-    live: true,
-    retry: true,
-  });
+  tasksDb
+    .sync(remoteTasksDb, {
+      live: true,
+      retry: true,
+    })
+    .on("active", async () => {
+      await writeLastSyncTime(mainWindow);
+    })
+    .on("change", async () => {
+      await writeLastSyncTime(mainWindow);
+    });
 
   // Create indexes for Mango
   tasksDb.createIndex({
