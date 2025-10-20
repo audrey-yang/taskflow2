@@ -83,7 +83,6 @@ const NoteList = ({ addTab }: { addTab: (note: { _id: string; title: string }) =
             </span>
             <IconButton
               onClick={async () => {
-                console.log(note);
                 await window.api.deleteNote(note._id);
                 getNotes();
               }}

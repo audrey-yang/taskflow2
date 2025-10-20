@@ -46,6 +46,9 @@ export const createMainWindow = (): void => {
 };
 
 async function showWindow() {
+  if (require("electron-squirrel-startup")) {
+    app.quit();
+  }
   try {
     await authService.refreshTokens();
     createMainWindow();
